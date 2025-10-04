@@ -577,6 +577,13 @@ nInput.addEventListener('input', update);
 
 // Initial draw
 update();
+    function toggleBurger() {
+      const topnav = document.getElementById("myTopnav");
+      topnav.classList.toggle("responsive");
+    }
+    
+    // Add click listener to burger icon
+    document.querySelector(".topnav .icon").addEventListener("click", toggleBurger);
 </script>
 
 
