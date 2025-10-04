@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cursor Trails</title>
+  <style>
+    body {
+      background: #111;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      cursor: none; /* hide default cursor */
+    }
+
+    .trail {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #00ffcc;
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0.8;
+      transform: translate(-50%, -50%);
+    }
+
+  </style>
+</head>
+<body>
+  <script>
+    document.addEventListener("mousemove", (e) => {
+      const trail = document.createElement("div");
+      trail.className = "trail";
+      trail.style.left = `${e.pageX}px`;
+      trail.style.top = `${e.pageY}px`;
+      document.body.appendChild(trail);
+
+      // Remove after animation ends
+      setTimeout(() => trail.remove(), 800);
+    });
+  </script>
+</body>
+</html>

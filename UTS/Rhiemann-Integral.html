@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Simulasi Δx Riemann</title>
+  <style>
+    :root{font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial}
+    body{margin:0;display:flex;gap:16px;min-height:100vh;padding:18px;background:#0f1724;color:#e6eef8}
+    .panel{width:360px;padding:16px;border-radius:12px;background:linear-gradient(180deg,#111827, #0b1220);box-shadow:0 8px 30px rgba(2,6,23,.6)}
+    h1{font-size:18px;margin:0 0 12px}
+    label{display:block;margin-top:10px;font-size:13px;color:#a9b4c8}
+    input[type=range]{width:100%}
+    select,input[type=number]{width:100%;padding:8px;margin-top:6px;border-radius:8px;border:1px solid rgba(255,255,255,.06);background:#08101a;color:inherit}
+    button{margin-top:10px;padding:8px 12px;border-radius:8px;border:none;background:#2563eb;color:white;cursor:pointer}
+    canvas{background:#071126;border-radius:8px;flex:1;box-shadow:0 8px 40px rgba(2,6,23,.6)}
+    .info{margin-top:8px;background:rgba(255,255,255,.02);padding:8px;border-radius:8px;font-size:13px}
+    .row{display:flex;gap:8px}
+    .small{font-size:13px;color:#9fb0d0}
+    .muted{color:#91a6c1}
+  </style>
+</head>
+<body>
+  <div class="panel">
+    <h1>Simulasi Δx pada Riemann Integral</h1>
+    <div class="small muted">Pilih fungsi, metode Riemann, dan jumlah partisi (n). Lihat Δx dan jumlah area.</div>
+
+    <label>Fungsi (JS expression, gunakan <code>x</code>)</label>
+    <input id="fnInput" value="Math.sin(x)" />
+
+    <label>Metode</label>
+    <select id="method">
+      <option value="left">Left Riemann</option>
+      <option value="right">Right Riemann</option>
+      <option value="mid">Midpoint</option>
+      <option value="trap">Trapezoid</option>
+    </select>
+
+    <div class="row">
+      <div style="flex:1">
+        <label>a (batas kiri)</label>
+        <input id="a" type="number" step="0.1" value="0" />
+      </div>
+      <div style="flex:1">
+        <label>b (batas kanan)</label>
+        <input id="b" type="number" step="0.1" value="6.283" />
+      </div>
+    </div>
+
+    <label>Jumlah partisi n: <span id="nLabel">16</span></label>
+    <input id="n" type="range" min="1" max="400" value="16" />
+
+    <div class="row">
+      <button id="play">Animasi: Naikkan n</button>
+      <button id="reset">Reset n</button>
+    </div>
+
+    <div class="info">
+      <div>Δx = <b id="dx">-</b></div>
+      <div>Riemann sum = <b id="sum">-</b></div>
+      <div>Estimasi kesalahan (hanya perbandingan) = <b id="err">-</b></div>
+    </div>
+
+    <div style="margin-top:10px;font-size:12px;color:#9fb0d0">
+      Tips: ketik ekspresi JS untuk fungsi (contoh: <code>Math.exp(-x/2)*Math.cos(x)</code>). Gunakan domain yang masuk akal.
+    </div>
+  </div>
+
+  <canvas id="c" width="900" height="600"></canvas>
+
+<script>
+(() => {
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  const fnInput = document.getElementById('fnInput');
+  const methodSel = document.getElementById('method');
+  const aInput = document.getElementById('a');
+  const bInput = document.getElementById('b');
+  const nRange = document.getElementById('n');
+  const nLabel = document.getElementById('nLabel');
+  const dxLabel = document.getElementById('dx');
+  const sumLabel = document.getElementById('sum');
+  const errLabel = document.getElementById('err');
+  const playBtn = document.getElementById('play');
+  const resetBtn = document.getElementById('reset');
+
+  let anim = null;
+  let isPlaying = false;
+
+  function parseFn(str){
+    try{
+      // Create function of x — sandboxed-ish because only expression allowed.
+      // We disallow certain tokens for safety (very basic check).
+      if(/\b(eval|Function|window|document|localStorage|fetch|XMLHttpRequest)\b/.test(str)) throw 'unsafe';
+      return new Function('x','return ' + str + ';');
+    }catch(e){
+      return x=>{return 0};
+    }
+  }
+
+  function draw(){
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0,0,w,h);
+
+    const a = Number(aInput.value);
+    const b = Number(bInput.value);
+    const n = Number(nRange.value);
+    nLabel.textContent = n;
+
+    const f = parseFn(fnInput.value);
+    const dx = (b - a)/n;
+    dxLabel.textContent = dx.toFixed(6);
+
+    // sample function to find y-range
+    const samples = 400;
+    let ymin=Infinity,ymax=-Infinity;
+    for(let i=0;i<=samples;i++){const x=a + (b-a)*i/samples;const y=Number(f(x));if(!isFinite(y)) continue;ymin=Math.min(ymin,y);ymax=Math.max(ymax,y)}
+    if(ymin==Infinity){ymin=-1;ymax=1}
+    // pad
+    const pad = 40;
+    ymin -= (ymax-ymin)*0.1 + 0.5;
+    ymax += (ymax-ymin)*0.1 + 0.5;
+
+    // coord transform
+    const toX = x => pad + (x - a)/(b-a)*(w - pad*2);
+    const toY = y => h - pad - (y - ymin)/(ymax - ymin)*(h - pad*2);
+
+    // axes
+    ctx.strokeStyle = 'rgba(200,220,255,0.12)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(pad,toY(0)); ctx.lineTo(w-pad,toY(0)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(toX(0),pad); ctx.lineTo(toX(0),h-pad); ctx.stroke();
+
+    // draw curve
+    ctx.beginPath();
+    for(let i=0;i<=samples;i++){
+      const x = a + (b-a)*i/samples;
+      const y = f(x);
+      const px = toX(x), py = toY(y);
+      if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+    }
+    ctx.lineWidth=2; ctx.strokeStyle='rgba(100,200,255,0.95)'; ctx.stroke();
+
+    // draw rectangles/trapezoids
+    let sum = 0;
+    for(let i=0;i<n;i++){
+      const x0 = a + i*dx;
+      const x1 = x0 + dx;
+      let height;
+      if(methodSel.value==='left') height = f(x0);
+      else if(methodSel.value==='right') height = f(x1);
+      else if(methodSel.value==='mid') height = f((x0+x1)/2);
+      else if(methodSel.value==='trap') height = (f(x0)+f(x1))/2;
+
+      // accumulate area (handle negative heights too)
+      sum += height * dx;
+
+      // draw shape
+      const X = toX(x0), W = toX(x1)-toX(x0);
+      const Y = toY(Math.max(0,height));
+      const Ybase = toY(0);
+
+      ctx.beginPath();
+      if(methodSel.value==='trap'){
+        // draw trapezoid polygon
+        const h0 = toY(f(x0)), h1 = toY(f(x1));
+        ctx.moveTo(X, Ybase);
+        ctx.lineTo(X, h0);
+        ctx.lineTo(X+W, h1);
+        ctx.lineTo(X+W, Ybase);
+        ctx.closePath();
+      } else {
+        // rectangle from 0 to height
+        ctx.rect(X, Math.min(Y,Ybase), W, Math.abs(Ybase - Y));
+      }
+      ctx.fillStyle = 'rgba(37,99,235,0.14)'; ctx.fill();
+      ctx.strokeStyle = 'rgba(37,99,235,0.25)'; ctx.stroke();
+    }
+
+    sumLabel.textContent = sum.toFixed(6);
+
+    // simple error estimate: compare with finer partition (2n)
+    let fineSum = 0;
+    const fn2 = parseFn(fnInput.value);
+    const m = Math.min(4000, n*4);
+    const dx2 = (b-a)/m;
+    for(let i=0;i<m;i++){
+      let hval;
+      const x0=a+i*dx2; const x1=x0+dx2;
+      if(methodSel.value==='left') hval = fn2(x0);
+      else if(methodSel.value==='right') hval = fn2(x1);
+      else if(methodSel.value==='mid') hval = fn2((x0+x1)/2);
+      else if(methodSel.value==='trap') hval = (fn2(x0)+fn2(x1))/2;
+      fineSum += hval*dx2;
+    }
+    errLabel.textContent = Math.abs(fineSum - sum).toExponential(3);
+
+    // overlay text
+    ctx.fillStyle='rgba(230,238,248,0.92)'; ctx.font='12px ui-sans-serif';
+    ctx.fillText('f(x) = ' + fnInput.value, pad+6, pad+14);
+    ctx.fillText('method: ' + methodSel.value + '   n=' + n, pad+6, pad+30);
+  }
+
+  function step(){ draw(); }
+
+  nRange.addEventListener('input', step);
+  fnInput.addEventListener('change', step);
+  methodSel.addEventListener('change', step);
+  aInput.addEventListener('change', step);
+  bInput.addEventListener('change', step);
+
+  playBtn.addEventListener('click', ()=>{
+    if(isPlaying){isPlaying=false; playBtn.textContent='Animasi: Naikkan n'; clearInterval(anim);}
+    else{isPlaying=true; playBtn.textContent='Berhenti'; anim=setInterval(()=>{ let v=Number(nRange.value); if(v<Number(nRange.max)) nRange.value=String(v+1); else { clearInterval(anim); isPlaying=false; playBtn.textContent='Animasi: Naikkan n'; } step(); }, 80);}  
+  });
+
+  resetBtn.addEventListener('click', ()=>{ nRange.value=16; step(); });
+
+  // initial draw
+  step();
+  // handle resize
+  window.addEventListener('resize', ()=>{
+    const ratio = window.devicePixelRatio || 1;
+    canvas.width = Math.floor((window.innerWidth - 420) * ratio);
+    canvas.height = Math.floor((window.innerHeight - 36) * ratio);
+    canvas.style.width = (window.innerWidth - 420) + 'px';
+    canvas.style.height = (window.innerHeight - 36) + 'px';
+    ctx.setTransform(ratio,0,0,ratio,0,0);
+    step();
+  });
+  // trigger resize to fit
+  window.dispatchEvent(new Event('resize'));
+})();
+</script>
+</body>
+</html>
