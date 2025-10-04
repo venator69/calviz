@@ -283,8 +283,8 @@
     <a href="pricing.html">Derivative</a>
     <a href="contacts.html">L'hospital</a>
     <a href="contacts.html">Taylor series</a>
-      <a href="burger" class="icon">
-        <i class="fa fa-bars"></i>
+    <a href="javascript:void(0);" class="icon">
+      <i class="fa fa-bars"></i>
     </a>
   </div>
 
@@ -577,13 +577,13 @@ nInput.addEventListener('input', update);
 
 // Initial draw
 update();
-    function toggleBurger() {
-      const topnav = document.getElementById("myTopnav");
-      topnav.classList.toggle("responsive");
-    }
-    
-    // Add click listener to burger icon
-    document.querySelector(".topnav .icon").addEventListener("click", toggleBurger);
+function toggleBurger() {
+  const topnav = document.getElementById("myTopnav");
+  topnav.classList.toggle("responsive");
+}
+
+// Add click listener to burger icon
+document.querySelector(".topnav .icon").addEventListener("click", toggleBurger);
 </script>
 
 
