@@ -285,7 +285,7 @@
     <a href="riemann.html">Riemann Integral</a>
     <a href="pricing.html">Derivative</a>
     <a href="contacts.html">L'hospital</a>
-    <a href="contacts.html">Taylor series</a>
+    <a href="series.html">Taylor series</a>
     <a href="javascript:void(0);" class="icon">
       <i class="fa fa-bars"></i>
     </a>
@@ -368,7 +368,6 @@
         <option value="left">Left Riemann</option>
         <option value="right">Right Riemann</option>
         <option value="mid">Midpoint</option>
-        <option value="trap">Trapezoid</option>
       </select>
     </div>
 
@@ -517,7 +516,6 @@ function drawRiemann(fn, a, b, n, method) {
     if (method === 'left') height = fn(x);
     else if (method === 'right') height = fn(x + dx);
     else if (method === 'mid') height = fn(x + dx/2);
-    else if (method === 'trap') height = (fn(x) + fn(x + dx))/2;
     
     riesum += dx * height;
 
