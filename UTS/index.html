@@ -212,6 +212,14 @@
           color: #333;
           align-content: center;
         }
+        #muteSm {
+          background: none;
+          border: none;
+          cursor: pointer;
+          font-size: 2rem;
+          color: #333;
+          align-content: center;
+        }
 
 
 
@@ -363,8 +371,8 @@
       </div>
     </div>
       <div class="songtitle" id="songtitlesmall">
-        <button id="muteBtn">
-          <i id="muteIcon" class="fa fa-volume-off"></i> 
+        <button id="muteSm">
+          <i id="muteIconSm" class="fa fa-volume-off"></i> 
         </button>
         <i> Song : Autopilot - Kitsch</i>
       </div>
@@ -444,12 +452,20 @@
 
 
     const muteBtn = document.getElementById('muteBtn');
+    const muteSm = document.getElementById('muteSm');
     const muteIcon = document.getElementById('muteIcon');
+    const muteIconSm = document.getElementById('muteIconSm');
 
     muteBtn.addEventListener('click', () => {
       if(audio.paused) audio.play();  // ensure audio plays on first click
       audio.muted = !audio.muted;     // toggle mute
       muteIcon.className = audio.muted ? "fa fa-volume-off" : "fa fa-volume-up"; // update icon
+    });
+
+    muteSm.addEventListener('click', () => {
+      if(audio.paused) audio.play();  // ensure audio plays on first click
+      audio.muted = !audio.muted;     // toggle mute
+      muteIconSm.className = audio.muted ? "fa fa-volume-off" : "fa fa-volume-up"; // update icon
     });
 
 
