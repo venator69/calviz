@@ -11,7 +11,7 @@
       body {
       margin: 0;
       font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-      background: linear-gradient(45deg, #6200ff, #00c3ff,#6200ff,#00c3ff);
+      background: linear-gradient(45deg, #a040ff, #ff0095,#a040ff, #ff0095);
       }
 
       .topnav {
@@ -167,7 +167,7 @@
         padding: 0.5rem;
         margin: 1rem 0;
       }
-      #n{
+      #terms{
         width: 60%;
       }
       input[type=range]{
@@ -262,7 +262,7 @@
           justify-content: center;
       }
       .links {display: inline;}
-      #n{
+      #terms{
         width: 100%;
       }
       }
@@ -362,53 +362,49 @@
     <div class="description">c<sub>1</sub> = f'(a)</div>
     <div class="description">c<sub>2</sub> = f''(a)/(2!)</div>
     <div class="description">thus: c<sub>n</sub> = f<sup>[n]</sup>(a)/(n!)</div>
+    <div class="description">
+      To make it easier to evaluate, use MacLaurin series, which is a Taylor series at a = 0:
+    </div>
   </div>
 
 
 
   <div class="card">
     <div class="subtitle">
-      Riemann Sum Visualization 
+      Maclaurin Series Visualisation
     </div>
     <div class="description">
       Select the functions:
       <select id="fnInput" class="selection">
-        <option value="sin">y = sin(x)+1</option>
-        <option value="linear">y = -0.5x+3</option>
-        <option value="parabolic">y = -x^2+4</option>
-        <option value="cubic">y = -x^3+8</option>
-        <option value="euler">y = e^x</option>
+        <option value="inv">y = 1/1-x</option>
+        <option value="ln">y = ln(1-x)</option>
+        <option value="exp">y = e^x</option>
+        <option value="sin">y = sin(x)</option>
+        <option value="cos">y = cos(x)</option>
         
       </select>
     </div>
-    <div class="description">
-      Select the methods:
-      <select id="method" class="selection">
-        <option value="left">Left Riemann</option>
-        <option value="right">Right Riemann</option>
-        <option value="mid">Midpoint</option>
-        <option value="trap">Trapezoid</option>
-      </select>
-    </div>
-
     <div class="description">  
       <div class="margins">
-        a/left margin:
-        <input id="a" type="number" step="any" value="0" class="selection" />
-        b/right margin:
-        <input id="b" type="number" step="any" value="6.283185" class="selection"/>
+        left margin:
+        <input id="a" type="number" step="any" value="-4" class="selection" />
+        right margin:
+        <input id="b" type="number" step="any" value="4" class="selection"/>
       </div>
     </div>
     <div class="description">
-      Number of partitions: <span id="nLabel">16</span>
+      x:
+      <input id="x" type="number" step="any" value="0" class="selection" />       
     </div>
     <div class="description">
-      <input id="n" type="range" min="1" max="200" value="16" />
+      Number of terms: <span id="termsLabel">4</span>
     </div>
-    <canvas id="c" width="1000" height="600"></canvas>
     <div class="description">
-    Riemann sum = <b id="rsum">-</b>,
-    integral = <b id="integ">-</b>,
+      <input id="terms" type="range" min="1" max="200" value="4" />
+    </div>
+    <canvas id="series" width="1000" height="600"></canvas>
+    <div class="description">
+    y = <b id="approx">-</b>, exact = <b id="exact">-</b>,
     err = <b id="err">-</b>
     </div>
   </div>
@@ -416,17 +412,14 @@
 
 
   <div class="card">
-    <div class="subtitle">Definite Integral</div>
+    <div class="subtitle">Taylor Approximation</div>
     <div class="description">
-      Now that you've learned how riemann sum can approximate the value of an integral, 
-      here's the exact definition of a definite integral using riemann sum: 
+      Using that properties we can now approximate many trancedental functions. With error function :  
     </div>
     <div class="image-container">
-      <img src="Definite_Integral.PNG" alt="integral">
+      <img src="error.png" alt="error">
     </div>
   </div>
-
-
 
   <div class="social">
     <div class="content">
@@ -460,154 +453,179 @@
     </div>
   </div>
 <script>
-const canvas = document.getElementById('c');
-const ctx = canvas.getContext('2d');
+const canvas = document.getElementById("series");
+const ctx = canvas.getContext("2d");
 
-// Function maps
-const fnMap = {
-  sin: x => Math.sin(x)+1,
-  linear: x => -0.5*x + 3,
-  parabolic: x => -x*x + 4,
-  cubic: x => -x*x*x + 8,
-  euler: x => Math.exp(x)
-};
-
-const fnInteg = {
-  sin: x => -Math.cos(x)+x,
-  linear: x => -0.25*x*x + 3*x,
-  parabolic: x => -1/3*x*x*x + 4*x,
-  cubic: x => -1/4*x*x*x*x + 8*x,
-  euler: x => Math.exp(x)
-};
-
-// Get HTML elements
+// Input elements
 const fnInput = document.getElementById('fnInput');
-const methodInput = document.getElementById('method');
 const aInput = document.getElementById('a');
 const bInput = document.getElementById('b');
-const nInput = document.getElementById('n');
-const nLabel = document.getElementById('nLabel');
-const rsumEl = document.getElementById('rsum');
-const integEl = document.getElementById('integ');
-const errEl = document.getElementById('err');
+const xInput = document.getElementById('x');
+const termsInput = document.getElementById('terms');
+const termsLabel = document.getElementById('termsLabel');
+const approx = document.getElementById('approx');
+const exact = document.getElementById('exact');
+const err = document.getElementById('err');
 
-// Draw axes
+/*************************************
+          Helper Functions
+**************************************/
+function factorial(n) {
+  return n <= 1 ? 1 : n * factorial(n - 1);
+}
+
+function mapX(x, a, b) {
+  return (x - a) / (b - a) * canvas.width;
+}
+
+function mapY(y, minY, maxY) {
+  return canvas.height - (y - minY) / (maxY - minY) * canvas.height;
+}
+
 function drawAxes(a, b, minY, maxY) {
   ctx.strokeStyle = '#000';
   ctx.lineWidth = 1;
 
-  // x-axis
+  // y-axis
   const x0 = (0 - a) / (b - a) * canvas.width;
   ctx.beginPath();
   ctx.moveTo(x0, 0);
-  ctx.lineTo(x0, canvas.height);
+  ctx.lineTo(x0+2, canvas.height);
   ctx.stroke();
 
-  // y-axis
+  // x-axis
   const y0 = canvas.height - (-minY) / (maxY - minY) * canvas.height;
   ctx.beginPath();
   ctx.moveTo(0, y0);
-  ctx.lineTo(canvas.width, y0);
+  ctx.lineTo(canvas.width, y0+2);
   ctx.stroke();
 }
 
-// Draw Riemann sum and return total sum
-function drawRiemann(fn, a, b, n, method) {
+/*************************************
+        Maclaurin Series Functions
+**************************************/
+function MLInv(x, terms) {
+  let sum = 0;
+  for (let n = 0; n < terms; n++) sum += Math.pow(x, n);
+  return sum;
+}
+
+function MLLn(x, terms) {
+  let sum = 0;
+  for (let n = 1; n <= terms; n++)
+    sum += Math.pow(-1, n + 1) * Math.pow(x, n) / n;
+  return sum;
+}
+
+function MLExp(x, terms) {
+  let sum = 0;
+  for (let n = 0; n < terms; n++)
+    sum += Math.pow(x, n) / factorial(n);
+  return sum;
+}
+
+function MLSin(x, terms) {
+  let sum = 0;
+  for (let n = 0; n < terms; n++)
+    sum += Math.pow(-1, n) * Math.pow(x, 2 * n + 1) / factorial(2 * n + 1);
+  return sum;
+}
+
+function MLCos(x, terms) {
+  let sum = 0;
+  for (let n = 0; n < terms; n++)
+    sum += Math.pow(-1, n) * Math.pow(x, 2 * n) / factorial(2 * n);
+  return sum;
+}
+
+/*************************************
+          Function References
+**************************************/
+const fnMaclaurin = {
+  inv: MLInv,
+  ln:  MLLn,
+  exp: MLExp,
+  sin: MLSin,
+  cos: MLCos,
+};
+
+const fnReal = {
+  inv: (x) => 1 / (1 - x),
+  ln:  (x) => Math.log(1 + x),
+  exp: (x) => Math.exp(x),
+  sin: (x) => Math.sin(x),
+  cos: (x) => Math.cos(x),
+};
+
+/*************************************
+          Drawing Functions
+**************************************/
+function drawSeries(fnM, fnR, a, b, terms) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Find min/max for scaling
+  // Compute Y bounds
   let minY = Infinity, maxY = -Infinity;
   for (let i = 0; i <= 100; i++) {
-    const x = a + (b - a) * i / 100;
-    const y = fn(x);
+    const xi = a + (b - a) * i / 100;
+    const y = fnM(xi, terms);
     if (y < minY) minY = y;
     if (y > maxY) maxY = y;
   }
 
   drawAxes(a, b, minY, maxY);
 
-  let riesum = 0;
-  const dx = (b - a) / n;
-
-  for (let i = 0; i < n; i++) {
-    let x = a + i * dx;
-    let height;
-
-    if (method === 'left') height = fn(x);
-    else if (method === 'right') height = fn(x + dx);
-    else if (method === 'mid') height = fn(x + dx/2);
-    else if (method === 'trap') height = (fn(x) + fn(x + dx))/2;
-    
-    riesum += dx * height;
-
-    // Scale coordinates
-    const scaledX = (x - a) / (b - a) * canvas.width;
-    const scaledDX = dx / (b - a) * canvas.width;
-    const scaledHeight = (height - minY) / (maxY - minY) * canvas.height;
-
-    ctx.fillStyle = '#00cfa2';
-    ctx.fillRect(scaledX, canvas.height - scaledHeight, scaledDX, scaledHeight);
-  }
-
-  // Draw function curve
+  // Draw real function
   ctx.beginPath();
-  ctx.strokeStyle = '#000';
-  ctx.lineWidth = 2;
-  for (let i = 0; i <= 500; i++) {
-    const x = a + (b - a) * i / 500;
-    const y = fn(x);
-    const px = (x - a) / (b - a) * canvas.width;
-    const py = canvas.height - (y - minY) / (maxY - minY) * canvas.height;
-    if (i === 0) ctx.moveTo(px, py);
-    else ctx.lineTo(px, py);
+  for (let px = a; px <= b; px += 0.01) {
+    const y = fnR(px);
+    ctx.lineTo(mapX(px, a, b), mapY(y, minY, maxY));
   }
+  ctx.strokeStyle = 'blue';
   ctx.stroke();
 
-  return riesum;
+  // Draw Maclaurin approximation
+  ctx.beginPath();
+  for (let px = a; px <= b; px += 0.01) {
+    const yApprox = fnM(px, terms);
+    ctx.lineTo(mapX(px, a, b), mapY(yApprox, minY, maxY));
+  }
+  ctx.strokeStyle = 'red';
+  ctx.stroke();
 }
 
-// Update everything
+
+/*************************************
+          Update Function
+**************************************/
 function update() {
-  const fn = fnMap[fnInput.value];
-  const integFn = fnInteg[fnInput.value];
-  const method = methodInput.value;
+  const fn = fnInput.value;
+  const fnM = fnMaclaurin[fn];
+  const fnR = fnReal[fn];
   const a = parseFloat(aInput.value);
   const b = parseFloat(bInput.value);
-  const n = parseInt(nInput.value);
+  const x = parseFloat(xInput.value);
+  const terms = parseInt(termsInput.value);
 
-  console.log("fn:", fnInput.value, "a:", a, "b:", b, "n:", n);
+  termsLabel.textContent = terms;
 
-  nLabel.textContent = n;
+  const approxUp = fnM(x, terms);
+  const exactUp = fnR(x);
+  approx.textContent = approxUp.toExponential(3);
+  exact.textContent = exactUp.toExponential(3);
+  err.textContent = Math.abs(approx - exact).toExponential(3);
 
-  const riesum = drawRiemann(fn, a, b, n, method);
-  console.log("Riemann sum:", riesum);
-
-  rsumEl.textContent = riesum.toFixed(6);
-
-  const exact = integFn(b) - integFn(a);
-  integEl.textContent = exact.toFixed(6);
-
-  errEl.textContent = Math.abs(riesum - exact).toFixed(6);
+  drawSeries(fnM, fnR, a, b, terms);
 }
 
-// Event listeners
-fnInput.addEventListener('change', update);
-methodInput.addEventListener('change', update);
-aInput.addEventListener('input', update);
-bInput.addEventListener('input', update);
-nInput.addEventListener('input', update);
+/*************************************
+          Event Listeners
+**************************************/
+[fnInput, aInput, bInput, xInput, termsInput].forEach(el =>
+  el.addEventListener('input', update)
+);
 
-// Initial draw
 update();
-function toggleBurger() {
-  const topnav = document.getElementById("myTopnav");
-  topnav.classList.toggle("responsive");
-}
-
-// Add click listener to burger icon
-document.querySelector(".topnav .icon").addEventListener("click", toggleBurger);
 </script>
-
 
 </body>
 </html>

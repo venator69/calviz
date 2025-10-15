@@ -27,6 +27,7 @@
   function draw() {
   const canvas = document.getElementById("series");
   const ctx = canvas.getContext("2d");
+  
   // Factorial function
   function factorial(n) {
     return n <= 1 ? 1 : n * factorial(n - 1);
@@ -89,7 +90,8 @@
 
   ctx.beginPath();
   for (let px = -8; px <= 8; px += 0.01) { // x in math units
-      let y = Math.exp(px); // original sine
+      let y = fun 
+      Math.exp(px); // original sine
       ctx.lineTo(mapX(px), mapY(y));
   }
   ctx.strokeStyle = 'blue';
