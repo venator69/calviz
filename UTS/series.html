@@ -217,14 +217,17 @@
         background: #fffb00;
       }
 
-      @media screen and (max-width: 1000px) {
-      .topnav a:not(:first-child) {display: none;}
-      .topnav a.icon {float: right; display: block;}
-      }
 
       @media screen and (max-width: 1000px) {
-      .topnav.responsive {position: relative;}
-      .topnav.responsive .icon {
+        .topnav a:not(:first-child) {
+        display: none;
+      }
+      .topnav a.icon {
+        float: right;
+        display: block;
+      }
+
+        .topnav.responsive .icon {
           position: absolute;
           right: 0;
           top: 0;
@@ -283,9 +286,9 @@
     <a href="index.html" class="active">CALVIZ</a>
     <a href="index.html">Home</a>
     <a href="riemann.html">Riemann Integral</a>
-    <a href="pricing.html">Derivative</a>
-    <a href="contacts.html">L'hospital</a>
-    <a href="contacts.html">Taylor series</a>
+    <a href="derivative.html">Derivative</a>
+    <a href="limit.html">L'hospital</a>
+    <a href="series.html">Taylor series</a>
     <a href="javascript:void(0);" class="icon">
       <i class="fa fa-bars"></i>
     </a>
@@ -612,7 +615,7 @@ function update() {
   const exactUp = fnR(x);
   approx.textContent = approxUp.toExponential(3);
   exact.textContent = exactUp.toExponential(3);
-  err.textContent = Math.abs(approx - exact).toExponential(3);
+  err.textContent = Math.abs(approxUp - exactUp).toExponential(3);
 
   drawSeries(fnM, fnR, a, b, terms);
 }
@@ -625,6 +628,16 @@ function update() {
 );
 
 update();
+
+// Toggle Burger Menu
+function toggleBurger() {
+  const topnav = document.getElementById("myTopnav");
+  topnav.classList.toggle("responsive");
+}
+
+// Add click listener to burger icon
+document.querySelector(".topnav .icon").addEventListener("click", toggleBurger);
+
 </script>
 
 </body>
