@@ -267,7 +267,7 @@
     </a>
   </div>
   <div class="wrapper">
-    <div class="content">
+    <div class="content" id="hoverBtn">
       <div class="typewriter">
         <div class="title"> Welcome to CALVIZ !!</div>
         <div class="pronoun">Welcome to</div>
@@ -330,6 +330,11 @@
       </a>
     </div>
   </div>
+  <audio loop id="hoverAudio">
+  <source src="Autopilot.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+  </audio>
+
 </body>
 <footer>
   <script>
@@ -364,7 +369,15 @@
     
     // Add click listener to burger icon
     document.querySelector(".topnav .icon").addEventListener("click", toggleBurger);
-    
+      
+    const btn = document.getElementById('hoverBtn');
+    const audio = document.getElementById('hoverAudio');
+
+    btn.addEventListener('mouseenter', () => {
+      audio.play();
+    });
+
+
   </script>
 </footer>
 </html>
