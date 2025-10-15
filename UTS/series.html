@@ -167,7 +167,7 @@
         padding: 0.5rem;
         margin: 1rem 0;
       }
-      #terms{
+      #terms, #x{
         width: 60%;
       }
       input[type=range]{
@@ -227,7 +227,7 @@
         display: block;
       }
 
-        .topnav.responsive .icon {
+      .topnav.responsive .icon {
           position: absolute;
           right: 0;
           top: 0;
@@ -273,7 +273,7 @@
         width: 100%; 
         height: auto; 
         max-width: 900px; 
-        max-height: 600px; 
+        max-height: 400px; 
         display: block;
         margin: 0 auto;
         padding:1.5rem 0;
@@ -396,8 +396,10 @@
       </div>
     </div>
     <div class="description">
-      x:
-      <input id="x" type="number" step="any" value="0" class="selection" />       
+      x: <span id="xLabel">0</span>
+    </div>
+    <div class="description">
+      <input id="x" type="range" min="-2" max="2" value="0" step="0.1"/>
     </div>
     <div class="description">
       Number of terms: <span id="termsLabel">4</span>
@@ -405,9 +407,9 @@
     <div class="description">
       <input id="terms" type="range" min="1" max="200" value="4" />
     </div>
-    <canvas id="series" width="1000" height="600"></canvas>
+    <canvas id="series" width="1000" height="400"></canvas>
     <div class="description">
-    y = <b id="approx">-</b>, exact = <b id="exact">-</b>,
+    y approx = <b id="approx">-</b>, y exact = <b id="exact">-</b>,
     err = <b id="err">-</b>
     </div>
   </div>
@@ -469,7 +471,7 @@ const termsLabel = document.getElementById('termsLabel');
 const approx = document.getElementById('approx');
 const exact = document.getElementById('exact');
 const err = document.getElementById('err');
-
+const xLabel = document.getElementById('xLabel');
 /*************************************
           Helper Functions
 **************************************/
@@ -487,7 +489,7 @@ function mapY(y, minY, maxY) {
 
 function drawAxes(a, b, minY, maxY) {
   ctx.strokeStyle = '#000';
-  ctx.lineWidth = 1;
+  ctx.lineWidth = 2;
 
   // y-axis
   const x0 = (0 - a) / (b - a) * canvas.width;
@@ -571,9 +573,15 @@ function drawSeries(fnM, fnR, a, b, terms) {
   for (let i = 0; i <= 100; i++) {
     const xi = a + (b - a) * i / 100;
     const y = fnM(xi, terms);
-    if (y < minY) minY = y;
-    if (y > maxY) maxY = y;
+    if (y > -500 && y < 500) { 
+      if (y < minY) minY = y;
+      if (y > maxY) maxY = y;
+    }
   }
+  const margin = 0.1 * (maxY - minY);
+  minY -= margin;
+  maxY += margin;
+
 
   drawAxes(a, b, minY, maxY);
 
@@ -594,6 +602,25 @@ function drawSeries(fnM, fnR, a, b, terms) {
   }
   ctx.strokeStyle = 'red';
   ctx.stroke();
+
+  // Draw cursor
+  const x = parseFloat(xInput.value);
+  const yApprox = fnM(x, terms);
+  const y = fnR(x);
+  
+  ctx.fillStyle = "red"; // Real function
+  ctx.fillRect(
+    mapX(x, a, b) - 4,           // shift left by half the square width
+    mapY(yApprox, minY, maxY) - 4, // shift up by half the square height
+    8, 8
+  );
+
+  ctx.fillStyle = "blue"; // Real function
+  ctx.fillRect(
+    mapX(x, a, b) - 4,
+    mapY(y, minY, maxY) - 4,
+    8, 8
+  );
 }
 
 
@@ -610,13 +637,15 @@ function update() {
   const terms = parseInt(termsInput.value);
 
   termsLabel.textContent = terms;
+  xLabel.textContent = x;
 
   const approxUp = fnM(x, terms);
   const exactUp = fnR(x);
   approx.textContent = approxUp.toExponential(3);
   exact.textContent = exactUp.toExponential(3);
   err.textContent = Math.abs(approxUp - exactUp).toExponential(3);
-
+  xInput.min = a;
+  xInput.max = b;
   drawSeries(fnM, fnR, a, b, terms);
 }
 
