@@ -159,15 +159,61 @@
           display: none;
         }
         #hoverimage img {
-          max-width: 400px;
-          height: auto;
+          width: 300px;
+          height: 300px;
           transition: opacity 0.5s ease-in-out; /* smooth fade */
           opacity: 1;
+          padding: 2rem;
         }
 
         #hoverimage img.fade-out {
           opacity: 0;
         }
+        #songtitlesmall {
+          display: none;
+        }
+        .songtitle {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 1rem;          /* add space between icon and text */
+            animation: moveAndColor 2s forwards; /* play once and stop at the end */
+        }
+
+        /* Keyframes for movement and color change */
+        
+        @keyframes moveAndColor {
+            0% {
+                left: 100%;
+                color: rgb(89, 0, 255);
+            }
+            20% {
+                color: rgb(0, 162, 255);
+            }
+            40% {
+                color: rgb(0, 255, 221);
+            }
+            60% {
+                color: rgb(0, 255, 0);
+            }
+            80% {
+                color: rgb(0, 255, 221);
+            }
+            100% {
+                left: 10%;
+                color: rgb(0, 162, 255);
+            }
+        }
+        #muteBtn {
+          background: none;
+          border: none;
+          cursor: pointer;
+          font-size: 2rem;
+          color: #333;
+          align-content: center;
+        }
+
+
 
         @media screen and (max-width: 1000px) {
           .topnav a:not(:first-child) {display: none;}
@@ -208,7 +254,6 @@
           }
           .image-container img{
             justify-content: center;
-            max-width: 50%;
           }
           .butts{
             display: flex;
@@ -222,6 +267,11 @@
           .pronoun{
             display: Block;
             font-size: clamp(1.3rem,5vw,4rem);
+          }
+          #hoverimage img {
+            width: 60%;      
+            max-width: 220px;
+            height: auto;    
           }
           .social-icons img {
           max-width: 30px;
@@ -247,7 +297,13 @@
           .links{
           display: inline;
           }
+          #songtitlebig{
+            display: none;
           }
+          #songtitlesmall {
+            display: flex;
+          }
+        }
 
 
     </style>
@@ -268,6 +324,10 @@
   </div>
   <div class="wrapper">
     <div class="content" id="hoverBtn">
+      <audio loop id="hoverAudio">
+      <source src="Autopilot.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+      </audio>
       <div class="typewriter">
         <div class="title"> Welcome to CALVIZ !!</div>
         <div class="pronoun">Welcome to</div>
@@ -295,7 +355,20 @@
       <div id="hoverimage">
         <img src="profile.png" alt="Profile picture">
       </div>
+      <div class="songtitle" id="songtitlebig">
+        <button id="muteBtn">
+          <i id="muteIcon" class="fa fa-volume-off"></i> 
+        </button>
+        <i> Song : Autopilot - Kitsch</i>
+      </div>
     </div>
+      <div class="songtitle" id="songtitlesmall">
+        <button id="muteBtn">
+          <i id="muteIcon" class="fa fa-volume-off"></i> 
+        </button>
+        <i> Song : Autopilot - Kitsch</i>
+      </div>
+
   </div>
   <div class="social">
     <div class="content">
@@ -330,10 +403,7 @@
       </a>
     </div>
   </div>
-  <audio loop id="hoverAudio">
-  <source src="Autopilot.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
-  </audio>
+
 
 </body>
 <footer>
@@ -370,11 +440,16 @@
     // Add click listener to burger icon
     document.querySelector(".topnav .icon").addEventListener("click", toggleBurger);
       
-    const btn = document.getElementById('hoverBtn');
     const audio = document.getElementById('hoverAudio');
 
-    btn.addEventListener('mouseenter', () => {
-      audio.play();
+
+    const muteBtn = document.getElementById('muteBtn');
+    const muteIcon = document.getElementById('muteIcon');
+
+    muteBtn.addEventListener('click', () => {
+      if(audio.paused) audio.play();  // ensure audio plays on first click
+      audio.muted = !audio.muted;     // toggle mute
+      muteIcon.className = audio.muted ? "fa fa-volume-off" : "fa fa-volume-up"; // update icon
     });
 
 
