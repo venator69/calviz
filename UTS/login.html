@@ -125,7 +125,7 @@
         .image-container img {
         width: 40px;
         height: auto;
-        display: block;
+        display: inline-block;
         justify-content: center;
         padding: 1rem;
         cursor: pointer;
@@ -150,6 +150,35 @@
           font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
           color: #333;
           font-weight: bolder;
+        }
+        .butts  {
+          background:linear-gradient(200deg,#7200cf,#00a6cf);
+          color:white;
+          font-size: clamp(1.5rem, 5vw, 2rem);
+          padding:  1rem 3rem;
+          margin: 1rem;
+          border: 2px solid white;   
+          border-radius: 2rem;
+        }
+        .butts:hover {
+          background: linear-gradient(200deg,#7200cf,#00a6cf);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          border: 2px solid #7200cf;
+        }
+        .buttons{
+          display: flex;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+        .auth:hover {
+          transform: scale(1.2);
+        }
+        .auth {
+          display: inline-block;   
+          gap: 0.75rem;               
+          font-size: 1rem;
+          padding: 0.5rem 1rem;
         }
         @media screen and (max-width: 1000px) {
         .topnav a:not(:first-child) {display: none;}
@@ -183,6 +212,13 @@
         }
         .links {display: inline;}
         }
+        
+        .butts{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: clamp(1rem,5vw,1.5rem);
+          }
     </style>
 </head>
 <body>
@@ -208,14 +244,19 @@
     </div>
 
     <div class="description">
-      <input type="text" class="selection" placeholder="Username" />
+      <input type="text" class="selection" placeholder="Username" id="username"/>
     </div>
 
     <div class="subtitle">
       Enter your Password :
     </div>
         <div class="description">
-      <input type="password" class="selection" placeholder="Password" />
+      <input type="password" class="selection" placeholder="Password" id="password"/>
+    </div>
+    <div class="buttons">
+      <button type="submit" id="submit" class="butts">
+        Submit
+      </button>
     </div>
 
     <div class="description">
@@ -223,8 +264,8 @@
     </div>
     <div class="description">
       <div class="image-container">
-        <img src="google.webp" alt="google">
-        <img src="twitter.webp" alt="twitter">
+        <img src="google.webp" alt="google" class="auth">
+        <img src="twitter.webp" alt="twitter" class="auth">
       </div>
     </div>
     
@@ -236,6 +277,17 @@
   </div>
 
 <script>
+username = document.getElementById("username");
+password = document.getElementById("password");
+submit = document.getElementById("submit");
+
+submit.addEventListener('click', () => isfilledcorrectly(username, password))
+function isfilledcorrectly(){
+  if (username.value === "" || password.value === "") {
+    alert("Please fill in all fields!");
+    return;
+  }
+}
 
 // Toggle Burger Menu
 function toggleBurger() {
