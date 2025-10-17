@@ -310,7 +310,7 @@
     <div class="description">
       <div class="image-container">
         <img src="google.webp" alt="google" class="auth">
-        <img src="twitter.webp" alt="twitter" class="auth">
+        <img src="github.png" alt="github" class="auth">
       </div>
     </div>
   </div>
@@ -332,7 +332,13 @@ function valid(email) {
     const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return pattern.test(email);
 }
+function validUsername(username) {
+  return username.trim() !== "" && !/\s/.test(username);
+}
 
+function isValidLength(username) {
+  return username.length >= 8 && username.length <= 18;
+}
 
 submit.addEventListener('click', (e) => {
   e.preventDefault();
@@ -352,6 +358,14 @@ async function isfilledcorrectly(username, password, passwordConfirm, email, ima
     alert("Passwords do not match!");
     return;
   }
+  if (!validUsername(username.value) || !validUsername(password.value)) {
+    alert("username or password can't include space");
+    return;
+  }
+  if (!isValidLength(username.value) || !isValidLength(password.value)) {
+    alert("username or password have to be between 8 to 16 letters and may include special characters and numbers");
+    return;
+  }
   if (!valid(email.value)){
     alert("Please Enter the right Email Format!");
     return;
@@ -359,7 +373,7 @@ async function isfilledcorrectly(username, password, passwordConfirm, email, ima
   try {
       await submitform(username.value, password.value, email.value, file);
     } catch (err) {
-      alert("Error submitting form. Please try again.");
+      alert(`Error submitting form. Please try again. error : ${err}`);
       console.error(err);
     }
 }
@@ -377,7 +391,6 @@ async function submitform(name, password, email, file) {
   try {
     const response = await fetch("http://localhost:3000/register", {
       method: "POST",
-      // Set the FormData instance as the request body
       body: formData
     });
     if (response.ok) {
@@ -385,12 +398,12 @@ async function submitform(name, password, email, file) {
       alert("Registered successfully");
       } else {
         console.error("Registration failed:", response.status);
-        alert("Registration failed");
+        alert(`Registration failed, ${response.status}, username or email is already registered`);
       }
     } catch (e) {
       console.error(e);
+      alert(`Registration failed, ${e}`);
     }
-
 }
 
 ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
