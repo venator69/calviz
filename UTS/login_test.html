@@ -469,7 +469,7 @@
 
       // Optional: fetch user info if backend supports it
       try {
-        const response = await fetch("http://localhost:3000/profile", {
+        const response = await fetch("calviz-server-production.up.railway.app", {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
         });
