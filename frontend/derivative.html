@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <title>Calviz</title>
+    <style>
+        body {
+        margin: 0;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        background: linear-gradient(45deg, #00ffb7, #00c3ff,#00ffb7,#00c3ff);
+        }
+
+        .topnav {
+          overflow: hidden;
+          background-color: #333;
+          position: sticky;
+          top: 0;
+          z-index: 1000; 
+        }
+
+        .topnav a {
+        float: left;
+        display: block;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 1rem;
+        }
+
+        .topnav a:hover {
+        background-color: #ddd;
+        color: black;
+        }
+
+        .topnav a.active {
+        background: white;
+        font-family: Courier, monospace;
+        font-weight: 1000;
+        color: #333;
+        text-align: center;
+        width: 30%;
+        }
+
+        .topnav .icon {
+        display: none;
+        }
+        .title {
+        color: #6200ff;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-size: clamp(2rem, 4vw, 4rem); 
+        padding: 1rem 0;
+        }
+        .subtitle {
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        color: #333;
+        font-size: clamp(1rem, 2vw, 2rem);
+        font-weight: bolder;
+        padding: 1rem 0;
+        }
+        .description {
+        font-size: clamp(0.75rem, 2vw, 1.5rem);
+        padding-bottom: 1rem;
+        padding-left : clamp(1rem, 2vw, 4rem);
+        padding-right : clamp(1rem, 2vw, 4rem);
+        }
+
+        .typewriter {
+        color: #6200ff;
+        font-family: monospace;
+        overflow: hidden;
+        border-right: .15em solid orange;
+        white-space: nowrap;
+        margin: 0 auto;
+        letter-spacing: .15em;
+        animation: typing 3.5s steps(30, end), blink-caret .5s step-end infinite;
+        }
+
+        @keyframes typing {
+        from { width: 0 }
+        to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+        from, to { border-color: transparent }
+        30% { border-color: orange }
+        }
+        .card {
+        padding: 2rem;
+        margin: 2rem;
+        background: white;
+        border-radius: 2rem;
+        font-family: 'Courier New', Courier, monospace;
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        color: black;
+        }
+        .social {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 2rem;
+        margin: 2rem;
+        background: white;
+        border-radius: 2rem;
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        font-family: 'Courier New', Courier, monospace;
+        color: black;
+        }
+
+        .social-icons img {
+        max-width: 60px;
+        height: auto;
+        cursor: pointer; 
+        transition: transform 0.2s;
+        padding: 1rem 4rem;
+        }
+
+        .social-icons img:hover {
+        transform: scale(1.2);
+        }
+
+        .social-icons {
+        display: inline-block;   
+        gap: 0.75rem;               
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+        }
+
+        .links {
+        display: none;
+        }
+
+        a {
+        text-decoration: none;
+        color: inherit;
+        }
+
+        .image-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin: 0 auto;
+        overflow: hidden;
+        }
+
+        .image-container img {
+        max-width: 70%;
+        height: auto;
+        display: block;
+        justify-content: center;
+        padding: 1rem;
+        cursor: pointer;
+        }
+        .selection{
+          outline: none;
+          font-family: inherit;
+          font-size: inherit;
+          border-radius:1rem;
+          color:#009171;
+          border: 2px solid #009171;
+          background:white;
+          padding: 0.5rem;
+          margin: 1rem 0;
+        }
+        #x, #time{
+          width: 60%;
+        }
+        input[type=range]{
+          -webkit-appearance: none;
+
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+          height: 8px;
+          background: #00cfa2;      /* track color */
+          border-radius: 5px;
+        }
+
+        input[type=range]::-moz-range-track {
+          height: 8px;
+          background: #00cfa2;
+          border-radius: 5px;
+        }
+        
+        /* Thumb */
+        input[type=range]::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          width: 20px;
+          height: 20px;
+          background: #08101a;   /* thumb color */
+          border-radius: 50%;
+          cursor: pointer;
+          margin-top: -6px;      /* center thumb on track */
+        }
+
+        input[type=range]::-moz-range-thumb {
+          width: 20px;
+          height: 20px;
+          background: #08101a;
+          border-radius: 50%;
+          cursor: pointer;
+        }
+
+        input[type=range]::-ms-thumb {
+          width: 20px;
+          height: 20px;
+          background: #08101a;
+          border-radius: 50%;
+          cursor: pointer;
+        }
+
+        input[type=range]:hover::-webkit-slider-thumb {
+          background: #fffb00;
+        }
+
+        @media screen and (max-width: 1000px) {
+        .topnav a:not(:first-child) {display: none;}
+        .topnav a.icon {float: right; display: block;}
+        }
+
+        @media screen and (max-width: 1000px) {
+        .topnav.responsive {position: relative;}
+        .topnav.responsive .icon {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+        .image-container img {
+          max-width: 100%;
+        }
+        .topnav.responsive a {
+            float: none;
+            display: block;
+            text-align: left;
+        }
+        .topnav a.active{
+            text-align: center;
+        }
+        .subtitle {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 1rem;
+            text-align: center;
+            max-width: 100%;
+        }
+        .social {padding: 1rem;}
+        .social-icons img {
+            max-width: 30px;
+            padding: 0.5rem 1rem;
+        }
+        .social-icons {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1rem;
+            font-weight: bold;
+            color: black;
+            padding: 0.5rem 1rem;
+            justify-content: center;
+        }
+        .links {display: inline;}
+        #x, #time{
+          width: 100%;
+        }
+        }
+        canvas {
+          width: 100%; 
+          height: auto; 
+          max-width: 900px; 
+          max-height: 600px; 
+          display: block;
+          margin: 0 auto;
+          padding:1.5rem 0;
+        }
+
+    </style>
+</head>
+<body>
+  <div class="topnav" id="myTopnav">
+    <a href="index.html" class="active">CALVIZ</a>
+    <a href="index.html">Home</a>
+    <a href="riemann.html">Riemann Integral</a>
+    <a href="derivative.html">Derivative</a>
+    <a href="limit.html">L'hospital</a>
+    <a href="series.html">Taylor series</a>
+    <a href="login.html" class="login">Login</a>
+    <a href="javascript:void(0);" class="icon">
+      <i class="fa fa-bars"></i>
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="typewriter">
+      <div class="title">
+        Introduction to Derivative
+      </div>
+    </div>
+    <div class="subtitle">
+      Instantaneous velocity
+    </div>
+    <div class="description">
+      If we drive an automobile from one town to another 80 miles away in 2 hours, our average velocity is 40
+      miles per hour. But during our trip the speedometer reading was often different from 40.At
+      the start, it registered 0; at times it rose as high as 57. What the speedometer reads at a
+      particular instant is the instantaneous velocity at that instant. 
+    </div>
+    <div class="description">
+      Average velocity is counted by dividing the distance traveled by the time taken to travel that distance.
+      The smaller the time interval, the closer the average velocity over that interval is to the instantaneous velocity.
+      If we let the time interval shrink to zero, the average velocity approaches the instantaneous velocity.
+        \[
+        v = \lim_{Δt \to 0} v_{avg} = \lim_{Δt \to 0} \frac{f(x+Δt) - f(x)}{Δt}
+        \]
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="subtitle">
+        Definition of a Derivative
+    </div>
+    <div class="description">
+        Using the example of velocity above, derivative of a function at a point is the limit of the average rate of change of the function over an interval as the interval shrinks to zero.
+        \[
+        f'(a) = \lim_{h \to 0} \frac{f(a+h) - f(a)}{h}
+        \]
+    </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="subtitle">
+      Derivative Visualisation
+    </div>
+    <div class="description">
+      evaluated at: <span id="xLabel">0</span>
+    </div>
+    <div class="description">
+      <input id="x" type="range" min="0" max="6" value="0"  step="0.1"/>
+    </div>
+    <div class="description">
+      Δtime : <span id="timeLabel">1</span>
+    </div>
+    <div class="description">
+      <input id="time" type="range" min="0.01" max="2" value="1"  step="0.01"/>
+    </div>
+    <canvas id="deriv" width="1000" height="400"></canvas>
+    <div class="description">
+    f(x) = <b id="yLabel">-</b>, f(x+Δtime) = <b id="yhLabel">-</b>,
+    </div>
+    Legend :
+      <span style="color:red;">Red</span> is the tangent line, <span style="color:blue;">Blue</span> is the Position.
+  </div>
+
+  <div class="social">
+    <div class="content">
+      <div class="subtitle">My Socials : </div>
+    <div class="socials">
+      <a href ="https://discord.com/users/864557474853290034">
+        <div class="social-icons">
+          <img src="assets/discord.png" alt="Profile picture"><span class="links">DISCORD</span>
+        </div>
+      </a>
+      <a href ="https://www.instagram.com/kletka69420/?next=%2F">      
+        <div class="social-icons">
+          <img src="assets/ig.png" alt="ig"><span class="links">INSTAGRAM</span>
+        </div>
+      </a>
+      <a href ="https://www.linkedin.com/feed/?trk=guest_homepage-basic_google-one-tap-submit">
+        <div class="social-icons">
+          <img src="assets/linkedin.png" alt="Profile picture"><span class="links">LINKEDIN</span>
+        </div>
+      </a>
+      <a href="https://www.youtube.com/@transracialtrain9151">
+        <div class="social-icons">
+          <img src="assets/youtube.png" alt="Profile picture"><span class="links">YOUTUBE</span>
+        </div>
+      </a>
+      <a href="https://github.com/venator69">
+        <div class="social-icons">
+          <img src="assets/github.png" alt="Profile picture"><span class="links">GITHUB</span>
+        </div>
+      </a>
+    </div>
+  </div>
+<script>
+  const canvas = document.getElementById("deriv");
+  const ctx = canvas.getContext("2d");
+  const timeLabel = document.getElementById('timeLabel');
+  const xLabel = document.getElementById('xLabel');
+  const yLabel = document.getElementById('yLabel');
+  const yhLabel = document.getElementById('yhLabel');
+  const a = 0, b = 6;
+// Input elements
+  const xInput = document.getElementById('x');
+  const timeInput = document.getElementById('time');
+
+/*************************************
+          Helper Functions
+**************************************/
+function mapX(x, a, b) {
+  return (x - a) / (b - a) * canvas.width;
+}
+
+function mapY(y, minY, maxY) {
+  return canvas.height - (y - minY) / (maxY - minY) * canvas.height;
+}
+
+function drawAxes(a, b, minY, maxY) {
+  ctx.strokeStyle = '#000';
+  ctx.lineWidth = 2;
+
+  // y-axis
+  const x0 = (0 - a) / (b - a) * canvas.width;
+  ctx.beginPath();
+  ctx.moveTo(x0, 0);
+  ctx.lineTo(x0+2, canvas.height);
+  ctx.stroke();
+
+  // x-axis
+  const y0 = canvas.height - (-minY) / (maxY - minY) * canvas.height;
+  ctx.beginPath();
+  ctx.moveTo(0, y0);
+  ctx.lineTo(canvas.width, y0+2);
+  ctx.stroke();
+}
+
+
+/*************************************
+          Drawing Functions
+**************************************/
+function drawTangent(x, time) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Compute Y bounds
+  let minY = Infinity, maxY = -Infinity;
+  for (let i = 0; i <= 100; i++) {
+    const xi = 0 + (6) * i / 100;
+    const y = 5+5*Math.sin(xi);
+    if (y < minY) minY = y;
+    if (y > maxY) maxY = y;
+  }
+  const margin = 0.1 * (maxY - minY);
+  minY -= margin;
+  maxY += margin;
+
+  
+  drawAxes(0, 6, minY, maxY);
+
+  // Draw function
+  ctx.beginPath();
+  for (let px = 0; px <= 6; px += 0.01) {
+    const y = 5+5*Math.sin(px);
+    ctx.lineTo(mapX(px, 0, 6), mapY(y, minY, maxY));
+  }
+  ctx.strokeStyle = 'blue';
+  ctx.stroke();
+
+  // Draw tangent
+  ctx.beginPath();
+  for (let px = 0; px <= 6; px += 0.01) {
+    const y = 5+5*Math.sin(x);
+    const yaddh = 5+5*Math.sin(x+time);
+    const grad = (yaddh - y) / time;
+    const ynew = y + grad * (px - x);
+    ctx.lineTo(mapX(px, 0, 6), mapY(ynew, minY, maxY));
+  }
+  ctx.strokeStyle = 'red';
+  ctx.stroke();
+}
+
+/*************************************
+          Update Function
+**************************************/
+function update() {
+  const timeUp = parseFloat(timeInput.value);
+  const xUp = parseFloat(xInput.value);
+
+  timeLabel.textContent = timeUp;
+  xLabel.textContent = xUp;
+
+  const yUp = 5+5*Math.sin(xUp);
+  const yhUp = 5+5*Math.sin(xUp+timeUp);
+  yLabel.textContent = yUp;
+  yhLabel.textContent = yhUp;
+
+  drawTangent(xUp, timeUp);
+}
+
+/*************************************
+          Event Listeners
+**************************************/
+[xInput, timeInput].forEach(el =>
+  el.addEventListener('input', update)
+);
+
+update();
+
+// Toggle Burger Menu
+function toggleBurger() {
+  const topnav = document.getElementById("myTopnav");
+  topnav.classList.toggle("responsive");
+}
+
+// Add click listener to burger icon
+document.querySelector(".topnav .icon").addEventListener("click", toggleBurger);
+
+</script>
+
+</body>
+</html>
