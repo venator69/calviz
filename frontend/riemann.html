@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="style.css">
+    
+    <link rel="stylesheet" href="style.css"> 
     
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.2/math.min.js"></script>
@@ -25,7 +26,8 @@
         </a>
     </div>
 
-    <div class="card">
+    <div class="card" data-card-id="riemann-intro-1">
+        <span class="read-toggle" onclick="toggleReadStatus(this)">Mark as Finished</span>
         <div class="typewriter">
             <div class="title">
                 Introduction to Integrals
@@ -60,7 +62,9 @@
             </div>
         </div>
     </div>
-    <div class="card">
+    
+    <div class="card" data-card-id="riemann-sum-def">
+        <span class="read-toggle" onclick="toggleReadStatus(this)">Mark as Finished</span>
         <div class="subtitle">
             Riemann Sum
         </div>
@@ -81,7 +85,9 @@
             <img src="assets/sum.png" alt="sum">
         </div>
     </div>
-    <div class="card">
+    
+    <div class="card" data-card-id="riemann-vis">
+        <span class="read-toggle" onclick="toggleReadStatus(this)">Mark as Finished</span>
         <div class="subtitle">
             Riemann Sum Visualization 
         </div>
@@ -132,7 +138,8 @@
         </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-card-id="riemann-def-integral">
+        <span class="read-toggle" onclick="toggleReadStatus(this)">Mark as Finished</span>
         <div class="subtitle">Definite Integral</div>
         <div class="description">
             Now that you've learned how riemann sum can approximate the value of an integral, 
@@ -403,14 +410,67 @@
         nInput.addEventListener('input', update);
 
         // Initial draw
-        toggleCustomInput(); // Call once to set initial state
+        toggleCustomInput(); 
 
-        // Toggle Burger Menu (SAMA SEPERTI SEBELUMNYA)
+        // Toggle Burger Menu
         function toggleBurger() {
             const topnav = document.getElementById("myTopnav");
             topnav.classList.toggle("responsive");
         }
         document.querySelector(".topnav .icon").addEventListener("click", toggleBurger);
+
+
+        /*************************************
+         LOCAL STORAGE PROGRESS TRACKER
+        **************************************/
+
+        const STORAGE_KEY = 'calviz_progress_riemann';
+        
+        // Function to load saved progress
+        function loadReadStatus() {
+            const savedProgress = localStorage.getItem(STORAGE_KEY);
+            if (savedProgress) {
+                const progress = JSON.parse(savedProgress);
+                const cards = document.querySelectorAll('.card');
+                
+                cards.forEach(card => {
+                    const id = card.getAttribute('data-card-id');
+                    if (progress[id]) {
+                        card.classList.add('read');
+                        const toggleButton = card.querySelector('.read-toggle');
+                        if (toggleButton) {
+                            toggleButton.textContent = 'Finished ✓';
+                        }
+                    }
+                });
+            }
+        }
+
+        // Function to save/toggle progress
+        window.toggleReadStatus = function(buttonElement) {
+            const card = buttonElement.closest('.card');
+            const id = card.getAttribute('data-card-id');
+            
+            let savedProgress = localStorage.getItem(STORAGE_KEY);
+            let progress = savedProgress ? JSON.parse(savedProgress) : {};
+            
+            // Toggle status
+            if (card.classList.contains('read')) {
+                card.classList.remove('read');
+                buttonElement.textContent = 'Mark as Finished';
+                delete progress[id];
+            } else {
+                card.classList.add('read');
+                buttonElement.textContent = 'Finished ✓';
+                progress[id] = true;
+            }
+        
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+        }
+        
+        // Execute load function when the page loads
+        document.addEventListener('DOMContentLoaded', loadReadStatus); 
+
     </script>
 </body>
 </html>
