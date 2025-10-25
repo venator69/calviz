@@ -1,7 +1,9 @@
+// backend/routes/auth.js
+
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { pool } = require('../server'); 
+const pool = require('../server').pool; 
 const router = express.Router();
 const saltRounds = 10;
 
@@ -13,7 +15,6 @@ router.post('/register', async (req, res) => {
     const { name, email, password } = req.body;
 
     try {
-        // 1. Check if user already exists
         const checkQuery = 'SELECT id FROM users WHERE email = $1';
         const existingUser = await pool.query(checkQuery, [email]);
 
@@ -26,8 +27,8 @@ router.post('/register', async (req, res) => {
 
         // Insert into database
         const insertQuery = `
-            INSERT INTO users(name, email, password)
-            VALUES($1, $2, $3) RETURNING id, name, email
+            INSERT INTO users(name, email, password, profile)
+            VALUES($1, $2, $3, NULL) RETURNING id, name, email
         `;
         const result = await pool.query(insertQuery, [name, email, hashed]);
 
@@ -54,13 +55,12 @@ router.post('/register', async (req, res) => {
 
 /**
  * @route   POST /api/auth/login
- * @description Authenticate user & get token.
+ * @description Authenticate user by email & get token.
  */
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        // Check User in DB
         const userQuery = `SELECT * FROM users WHERE email = $1`;
         const result = await pool.query(userQuery, [email]);
         
@@ -103,12 +103,11 @@ router.post('/login', async (req, res) => {
 const authMiddleware = require('../middleware/auth');
 router.get('/user', authMiddleware, async (req, res) => {
     try {
-        // req.user is set by the auth middleware
         const userQuery = 'SELECT id, name, email FROM users WHERE id = $1';
         const userResult = await pool.query(userQuery, [req.user.id]);
 
         if (userResult.rows.length === 0) {
-             return res.status(404).json({ msg: 'User not found' });
+            return res.status(404).json({ msg: 'User not found' });
         }
 
         res.json(userResult.rows[0]);
@@ -117,6 +116,5 @@ router.get('/user', authMiddleware, async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
-
 
 module.exports = router;
