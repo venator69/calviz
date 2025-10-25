@@ -264,7 +264,7 @@
     </div>
     <div class="description">
       <div class="image-container">
-        <img src="google.webp" alt="google" class="auth">
+        <img src="google.webp" alt="google" class="auth" id="google-login">
         <img src="github.png" alt="github" class="auth">
       </div>
     </div>
@@ -280,6 +280,11 @@
 username = document.getElementById("username");
 password = document.getElementById("password");
 submit = document.getElementById("submit");
+
+// google login
+document.getElementById('google-login').addEventListener('click', () => {
+window.location.href = 'http://localhost:3000/auth/google';
+});
 
 submit.addEventListener('click', () => isfilledcorrectly(username, password))
 async function isfilledcorrectly(){

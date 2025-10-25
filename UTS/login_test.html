@@ -96,7 +96,13 @@
           align-items: center;   
           padding: 0 10px;     
         }
-
+        #usermame{
+          display: flex;
+          justify-content: center;           
+          margin-left: auto; 
+          align-items: center;     
+          padding-right: 10px;        
+        }
         .topnav a.pp {
           padding: 0;
         }
@@ -251,9 +257,6 @@
           margin-left: auto; 
         }
 
-        .topnav.responsive a {
-          display: block;
-        }
 
         @media screen and (max-width: 1000px) {
           .topnav a:not(:first-child) {display: none;}
@@ -360,6 +363,8 @@
     </a>
     <a href="javascript:void(0);" class="icon">
       <i class="fa fa-bars"></i>
+</a>
+
     </a>
   </div>
   <div class="wrapper">
@@ -448,27 +453,21 @@
 </body>
 <footer>
   <script>
-  document.addEventListener("DOMContentLoaded", async () => {
-  const params = new URLSearchParams(window.location.search);
-  const urltoken = params.get("token");
-
-  if (urltoken) {
-    localStorage.setItem("token", urltoken);
-    window.history.replaceState({}, document.title, "/");
-    return; 
-  }
-
-  // Handle login page
-  async function handleLoginState() {
+  window.addEventListener("DOMContentLoaded", async () => {
     const loginLink = document.querySelector(".login");
     const profilePic = document.querySelector("#pp");
     const usernameLabel = document.querySelector("#username");
-    const token = localStorage.getItem("token");
 
+    const token = localStorage.getItem("token"); 
+
+
+    // Token authorization
     if (token) {
+      // User is logged in
       loginLink.style.display = "none";
-      profilePic.style.display = "flex";
+      profilePic.style.display = "flex"; // show profile
 
+      // Optional: fetch user info if backend supports it
       try {
         const response = await fetch("http://localhost:3000/profile", {
           method: "GET",
@@ -477,6 +476,7 @@
 
         if (response.ok) {
           const user = await response.json();
+          // If your backend returns { name, profile_picture }
           if (user.profile_picture) {
             profilePic.querySelector("img").src = user.profile_picture;
           }
@@ -484,76 +484,78 @@
             usernameLabel.textContent = user.name;
           }
         } else {
-          logout(); // invalid token
+          // Token expired — log out
+          logout();
         }
       } catch (err) {
-        console.error("Error fetching profile:", err);
+        console.error("Error fetching user profile:", err);
       }
     } else {
-      loginLink.style.display = "flex";
+      // User not logged in
+      loginLink.style.display = "block";
       profilePic.style.display = "none";
     }
-  }
+  });
 
+  // Logout function
   function logout() {
     localStorage.removeItem("token");
     location.reload();
   }
 
-  await handleLoginState();
 
-      const img = document.querySelector("#hoverimage img");
+    const img = document.querySelector("#hoverimage img");
 
-      const buttonImages = {
-        integral: "profile.png",
-        derivative: "derivative.png",
-        limit: "limit.png",
-        series: "series.png"
-      };
+    const buttonImages = {
+      integral: "profile.png",
+      derivative: "derivative.png",
+      limit: "limit.png",
+      series: "series.png"
+    };
 
-      function changeImage(newSrc) {
-        img.classList.add("fade-out");
-        setTimeout(() => {
-          img.src = newSrc;
-          img.classList.remove("fade-out");
-        }, 300); 
-      }
+    function changeImage(newSrc) {
+      img.classList.add("fade-out");
+      setTimeout(() => {
+        img.src = newSrc;
+        img.classList.remove("fade-out");
+      }, 300); 
+    }
 
-      for (let id in buttonImages) {
-        const btn = document.getElementById(id);
+    for (let id in buttonImages) {
+      const btn = document.getElementById(id);
 
-        btn.addEventListener("mouseenter", () => {
-          changeImage(buttonImages[id]);
-        });
-      }
-      function toggleBurger() {
-        const topnav = document.getElementById("myTopnav");
-        topnav.classList.toggle("responsive");
-      }
+      btn.addEventListener("mouseenter", () => {
+        changeImage(buttonImages[id]);
+      });
+    }
+    function toggleBurger() {
+      const topnav = document.getElementById("myTopnav");
+      topnav.classList.toggle("responsive");
+    }
+    
+    // Add click listener to burger icon
+    document.querySelector(".topnav .icon").addEventListener("click", toggleBurger);
       
-      // Add click listener to burger icon
-      document.querySelector(".topnav .icon").addEventListener("click", toggleBurger);
-        
-      const audio = document.getElementById('hoverAudio');
+    const audio = document.getElementById('hoverAudio');
 
 
-      const muteBtn = document.getElementById('muteBtn');
-      const muteSm = document.getElementById('muteSm');
-      const muteIcon = document.getElementById('muteIcon');
-      const muteIconSm = document.getElementById('muteIconSm');
+    const muteBtn = document.getElementById('muteBtn');
+    const muteSm = document.getElementById('muteSm');
+    const muteIcon = document.getElementById('muteIcon');
+    const muteIconSm = document.getElementById('muteIconSm');
 
-      muteBtn.addEventListener('click', () => {
-        if(audio.paused) audio.play();  // ensure audio plays on first click
-        audio.muted = !audio.muted;     // toggle mute
-        muteIcon.className = audio.muted ? "fa fa-volume-off" : "fa fa-volume-up"; // update icon
-      });
+    muteBtn.addEventListener('click', () => {
+      if(audio.paused) audio.play();  // ensure audio plays on first click
+      audio.muted = !audio.muted;     // toggle mute
+      muteIcon.className = audio.muted ? "fa fa-volume-off" : "fa fa-volume-up"; // update icon
+    });
 
-      muteSm.addEventListener('click', () => {
-        if(audio.paused) audio.play();  // ensure audio plays on first click
-        audio.muted = !audio.muted;     // toggle mute
-        muteIconSm.className = audio.muted ? "fa fa-volume-off" : "fa fa-volume-up"; // update icon
-      });
-    });    
+    muteSm.addEventListener('click', () => {
+      if(audio.paused) audio.play();  // ensure audio plays on first click
+      audio.muted = !audio.muted;     // toggle mute
+      muteIconSm.className = audio.muted ? "fa fa-volume-off" : "fa fa-volume-up"; // update icon
+    });
+
 
   </script>
 </footer>
