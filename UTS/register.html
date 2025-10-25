@@ -379,10 +379,7 @@ async function isfilledcorrectly(username, password, passwordConfirm, email, ima
 }
 
 async function submitform(name, password, email, file) {
-  // Construct a FormData instance
   const formData = new FormData();
-
-  // Add the data
   formData.append('name', name);
   formData.append('password', password);
   formData.append('email', email);
@@ -393,19 +390,31 @@ async function submitform(name, password, email, file) {
       method: "POST",
       body: formData
     });
-    if (response.ok) {
-      console.log(await response.json());
-      alert("Registered successfully");
-      } else {
-        console.error("Registration failed:", response.status);
-        console.log(await response.json())
-        alert(`Registration failed, ${response.status}, username or email is already registered`);
-      }
-    } catch (e) {
-      console.error(e);
-      alert(`Registration failed, ${e}`);
+
+    let data;
+    try {
+      data = await response.json(); // coba parse JSON
+    } catch (err) {
+      const text = await response.text(); // fallback kalau bukan JSON
+      console.error("Response is not JSON:", text);
+      alert("Registration failed: server returned invalid response");
+      return;
     }
+
+    if (response.ok) {
+      console.log(data);
+      alert("Registered successfully");
+    } else {
+      console.error("Registration failed:", data);
+      alert(`Registration failed: ${data.message || response.status}`);
+    }
+
+  } catch (e) {
+    console.error(e);
+    alert(`Registration failed: ${e}`);
+  }
 }
+
 
 ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
   dropArea.addEventListener(eventName, e => e.preventDefault());
