@@ -5,6 +5,8 @@ This project is created as part of the **Midterm Exam** for the course
 
 The website serves as a **Virtual Laboratory** for students taking a **Calculus** course, providing interactive materials and visualizations to enhance understanding of mathematical concepts.
 
+🌐 **Live Website:** [calviz.vercel.app](https://calviz.vercel.app)
+
 ---
 
 ## 👥 Team Members
