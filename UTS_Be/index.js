@@ -48,12 +48,19 @@ function authenticateToken(req, res, next) {
 
 const port = process.env.PORT || 3000;
 
+/*--------------------
+      Middlewares
+----------------------*/
+const jwt = require('jsonwebtoken')
+
+// pool config
 const pool = new Pool({
   user: process.env.PGUSER,
   host: process.env.PGHOST,
   database: process.env.PGDATABASE,
   password: process.env.PGPASSWORD,
-  port: process.env.PGPORT
+  port: process.env.PGPORT,
+    ssl: { rejectUnauthorized: false },
 });
 
 // Multer config 
@@ -77,12 +84,6 @@ pool.query('SELECT NOW()', (err, res) => {
   else console.log('PostgreSQL connected at', res.rows[0].now);
 });
 
-/*--------------------
-      Middlewares
-----------------------*/
-const jwt = require('jsonwebtoken')
-
-
 
 /*--------------------
       Endpoints
@@ -92,7 +93,7 @@ const jwt = require('jsonwebtoken')
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: "http://localhost:3000/auth/google/callback"
+  callbackURL: "https://calviz-api.up.railway.app/auth/google/callback"
 }, async (accessToken, refreshToken, profile, done) => {
   try {
     const email = profile.emails[0].value;
