@@ -398,6 +398,7 @@ async function submitform(name, password, email, file) {
       alert("Registered successfully");
       } else {
         console.error("Registration failed:", response.status);
+        console.log(await response.json())
         alert(`Registration failed, ${response.status}, username or email is already registered`);
       }
     } catch (e) {
