@@ -27,7 +27,6 @@
     </div>
 
     <div class="card" data-card-id="riemann-intro-1">
-        <span class="read-toggle" onclick="toggleReadStatus(this)">Mark as Finished</span>
         <div class="typewriter">
             <div class="title">
                 Introduction to Integrals
@@ -64,7 +63,6 @@
     </div>
     
     <div class="card" data-card-id="riemann-sum-def">
-        <span class="read-toggle" onclick="toggleReadStatus(this)">Mark as Finished</span>
         <div class="subtitle">
             Riemann Sum
         </div>
@@ -87,7 +85,6 @@
     </div>
     
     <div class="card" data-card-id="riemann-vis">
-        <span class="read-toggle" onclick="toggleReadStatus(this)">Mark as Finished</span>
         <div class="subtitle">
             Riemann Sum Visualization 
         </div>
@@ -134,12 +131,11 @@
             Riemann sum = <b id="rsum">-</b>,
             integral = <b id="integ">-</b>,
             err = <b id="err">-</b>
-            <span id="customNote" style="color: grey; font-size: 0.8em; display: none;">(Integral Eksak Dihapus untuk fungsi kustom)</span>
+            <span id="customNote" style="color: grey; font-size: 0.8em; display: none;">(Exact Integral removed for custom function)</span>
         </div>
     </div>
 
     <div class="card" data-card-id="riemann-def-integral">
-        <span class="read-toggle" onclick="toggleReadStatus(this)">Mark as Finished</span>
         <div class="subtitle">Definite Integral</div>
         <div class="description">
             Now that you've learned how riemann sum can approximate the value of an integral, 
@@ -148,6 +144,15 @@
         <div class="image-container">
             <img src="assets/Definite_Integral.PNG" alt="integral">
         </div>
+    </div>
+    
+    <div class="card" style="text-align: center; max-width: 80%; margin: 2rem auto; padding: 1rem 2rem;">
+        <div class="subtitle" style="padding-bottom: 0;">Module Status: Riemann Integral</div>
+        <button id="module-complete-toggle" 
+                class="selection" 
+                style="background-color: #6200ff; color: white; border: none; font-size: 1.2rem;">
+            Mark Module as Complete
+        </button>
     </div>
 
     <div class="social">
@@ -184,6 +189,7 @@
     <script>
         const canvas = document.getElementById('c');
         const ctx = canvas.getContext('2d');
+        const moduleToggleButton = document.getElementById('module-complete-toggle');
 
         // Function maps (for presets)
         const fnMap = {
@@ -360,7 +366,7 @@
 
             if (isNaN(a) || isNaN(b) || a >= b) {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                rsumEl.textContent = "Batas [a, b] tidak valid!";
+                rsumEl.textContent = "Invalid bounds [a, b]!";
                 integEl.textContent = "-";
                 errEl.textContent = "-";
                 return;
@@ -372,17 +378,15 @@
             let exact = NaN;
 
             if (isCustomMode) {
-                // Custom Mode: Use Math.js
                 const fnString = fnCustomInput.value;
                 if (compileCustomFunction(fnString)) {
                     riesum = drawRiemann(a, b, n, method);
                 } else {
-                    return; // Stop if syntax error
+                    return; 
                 }
                 integEl.textContent = "-";
                 errEl.textContent = "-";
             } else {
-                // Preset Mode: Use fnMap
                 const fnKey = fnSelect.value;
                 currentFunctionEvaluator = fnMap[fnKey];
                 riesum = drawRiemann(a, b, n, method);
@@ -421,55 +425,39 @@
 
 
         /*************************************
-         LOCAL STORAGE PROGRESS TRACKER
+         LOCAL STORAGE MODULE PROGRESS TRACKER
         **************************************/
 
-        const STORAGE_KEY = 'calviz_progress_riemann';
+        const MODULE_ID = 'riemann'; 
+        const STORAGE_KEY_MODULE = `calviz_module_${MODULE_ID}_complete`;
         
-        // Function to load saved progress
-        function loadReadStatus() {
-            const savedProgress = localStorage.getItem(STORAGE_KEY);
-            if (savedProgress) {
-                const progress = JSON.parse(savedProgress);
-                const cards = document.querySelectorAll('.card');
-                
-                cards.forEach(card => {
-                    const id = card.getAttribute('data-card-id');
-                    if (progress[id]) {
-                        card.classList.add('read');
-                        const toggleButton = card.querySelector('.read-toggle');
-                        if (toggleButton) {
-                            toggleButton.textContent = 'Finished ✓';
-                        }
-                    }
-                });
+        function loadModuleStatus() {
+            const isComplete = localStorage.getItem(STORAGE_KEY_MODULE) === 'true';
+            updateModuleButton(isComplete);
+        }
+
+        function updateModuleButton(isComplete) {
+            if (isComplete) {
+                moduleToggleButton.textContent = 'Module Complete ✓';
+                moduleToggleButton.style.backgroundColor = '#00a6cf';
+                document.querySelectorAll('.card').forEach(card => card.classList.add('read'));
+            } else {
+                moduleToggleButton.textContent = 'Mark Module as Complete';
+                moduleToggleButton.style.backgroundColor = '#6200ff';
+                document.querySelectorAll('.card').forEach(card => card.classList.remove('read'));
             }
         }
 
-        // Function to save/toggle progress
-        window.toggleReadStatus = function(buttonElement) {
-            const card = buttonElement.closest('.card');
-            const id = card.getAttribute('data-card-id');
+        window.toggleModuleStatus = function() {
+            const isCurrentlyComplete = localStorage.getItem(STORAGE_KEY_MODULE) === 'true';
+            const newStatus = !isCurrentlyComplete;
             
-            let savedProgress = localStorage.getItem(STORAGE_KEY);
-            let progress = savedProgress ? JSON.parse(savedProgress) : {};
-            
-            // Toggle status
-            if (card.classList.contains('read')) {
-                card.classList.remove('read');
-                buttonElement.textContent = 'Mark as Finished';
-                delete progress[id];
-            } else {
-                card.classList.add('read');
-                buttonElement.textContent = 'Finished ✓';
-                progress[id] = true;
-            }
-        
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+            localStorage.setItem(STORAGE_KEY_MODULE, newStatus ? 'true' : 'false');
+            updateModuleButton(newStatus);
         }
         
-        // Execute load function when the page loads
-        document.addEventListener('DOMContentLoaded', loadReadStatus); 
+        moduleToggleButton.addEventListener('click', window.toggleModuleStatus);
+        document.addEventListener('DOMContentLoaded', loadModuleStatus); 
 
     </script>
 </body>
