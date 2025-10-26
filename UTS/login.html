@@ -318,8 +318,7 @@ async function submitform(name, password) {
     const data = await response.json().catch(() => ({}));
     if (response.ok) {
       console.log(data.message);
-      alert("Login successfully");
-
+      
       window.location.href = "https://calviz.vercel.app/index.html";
 
       } else {
