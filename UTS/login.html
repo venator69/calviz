@@ -291,14 +291,17 @@ submit.addEventListener('click', async () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name: nameVal, password: passVal }),
-      credentials: "include"
+      credentials: "include" // kirim cookie session otomatis
     });
-    const data = await res.json();
+
+    const data = await res.json().catch(() => ({}));
+
     if (res.ok) {
       console.log("Login sukses", data);
+      // redirect setelah login berhasil
       window.location.href = "https://calviz.vercel.app/index.html";
     } else {
-      alert(`Login gagal: ${data.message}`);
+      alert(`Login gagal: ${data.message || res.status}`);
     }
   } catch (err) {
     console.error(err);
@@ -306,8 +309,6 @@ submit.addEventListener('click', async () => {
   }
 });
 </script>
-
-
 
 </body>
 </html>

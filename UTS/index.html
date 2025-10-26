@@ -451,40 +451,28 @@
 document.addEventListener("DOMContentLoaded", async () => {
 
   // -----------------------------
-  // HELPER COOKIE FUNCTIONS
-  // -----------------------------
-  function setCookie(name, value, days) {
-    const d = new Date();
-    d.setTime(d.getTime() + (days*24*60*60*1000));
-    document.cookie = `${name}=${value};path=/;Secure;SameSite=None;expires=${d.toUTCString()}`;
-  }
-  function deleteCookie(name) {
-    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-  }
-
-  // -----------------------------
   // LOGIN FUNCTION
   // -----------------------------
   async function loginUser(name, password) {
-    if(!name || !password) return alert("Name dan password wajib diisi");
+    if (!name || !password) return alert("Name dan password wajib diisi");
 
     try {
       const res = await fetch("https://calviz-server-production.up.railway.app/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, password }),
-        credentials: "include"
+        credentials: "include" // penting untuk session cookie
       });
 
-      const data = await res.json().catch(()=>({}));
-      if(res.ok){
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) {
         console.log("Login sukses", data);
         alert("Login berhasil!");
         await handleLoginState();
       } else {
         alert(`Login gagal: ${data.message || res.status}`);
       }
-    } catch(err){
+    } catch (err) {
       console.error("Login error:", err);
       alert("Login error: " + err.message);
     }
@@ -493,15 +481,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   // -----------------------------
   // LOGOUT FUNCTION
   // -----------------------------
-  async function logout(){
-    try{
+  async function logout() {
+    try {
       await fetch("https://calviz-server-production.up.railway.app/logout", {
-        method:"POST",
-        credentials:"include"
+        method: "POST",
+        credentials: "include"
       });
-      deleteCookie("token");
-      location.reload();
-    } catch(err){
+      location.reload(); // reload untuk refresh state
+    } catch (err) {
       console.error("Logout error:", err);
     }
   }
@@ -509,29 +496,29 @@ document.addEventListener("DOMContentLoaded", async () => {
   // -----------------------------
   // PROFILE CHECK FUNCTION
   // -----------------------------
-  async function handleLoginState(){
-    try{
+  async function handleLoginState() {
+    try {
       const res = await fetch("https://calviz-server-production.up.railway.app/profile", {
-        method:"GET",
-        credentials:"include"
+        method: "GET",
+        credentials: "include"
       });
-      const data = await res.json().catch(()=>({}));
+      const data = await res.json().catch(() => ({}));
       const loginLink = document.querySelector(".login");
       const profilePic = document.querySelector("#pp");
       const usernameLabel = document.querySelector("#username");
 
-      if(res.ok && data.name){
-        if(loginLink) loginLink.style.display = "none";
-        if(profilePic){
+      if (res.ok && data.name) {
+        if (loginLink) loginLink.style.display = "none";
+        if (profilePic) {
           profilePic.style.display = "flex";
           profilePic.querySelector("img").src = data.profile_picture || "default.jpg";
         }
-        if(usernameLabel) usernameLabel.textContent = data.name;
+        if (usernameLabel) usernameLabel.textContent = data.name;
       } else {
-        if(loginLink) loginLink.style.display = "flex";
-        if(profilePic) profilePic.style.display = "none";
+        if (loginLink) loginLink.style.display = "flex";
+        if (profilePic) profilePic.style.display = "none";
       }
-    } catch(err){
+    } catch (err) {
       console.error("Profile fetch error:", err);
     }
   }
@@ -540,8 +527,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   // FORM SUBMIT LISTENER
   // -----------------------------
   const loginForm = document.getElementById("loginForm");
-  if(loginForm){
-    loginForm.addEventListener("submit", e=>{
+  if (loginForm) {
+    loginForm.addEventListener("submit", e => {
       e.preventDefault();
       const name = document.getElementById("nameInput").value.trim();
       const password = document.getElementById("passwordInput").value.trim();
@@ -553,7 +540,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // LOGOUT BUTTON
   // -----------------------------
   const logoutBtn = document.getElementById("logoutBtn");
-  if(logoutBtn) logoutBtn.addEventListener("click", logout);
+  if (logoutBtn) logoutBtn.addEventListener("click", logout);
 
   // -----------------------------
   // INITIAL CHECK
@@ -571,7 +558,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   for (let id in buttonImages) {
     const btn = document.getElementById(id);
-    if(btn) btn.addEventListener("mouseenter", () => changeImage(buttonImages[id]));
+    if (btn) btn.addEventListener("mouseenter", () => changeImage(buttonImages[id]));
   }
 
   const topnav = document.getElementById("myTopnav");
@@ -584,7 +571,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 });
 </script>
-
 
 
 </footer>
