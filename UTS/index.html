@@ -447,115 +447,119 @@
 
 </body>
 <footer>
-  <script>
+<script>
   document.addEventListener("DOMContentLoaded", async () => {
-  const params = new URLSearchParams(window.location.search);
-  const urltoken = params.get("token");
+    const params = new URLSearchParams(window.location.search);
+    const urltoken = params.get("token");
 
-  if (urltoken) {
-    localStorage.setItem("token", urltoken);
-    window.history.replaceState({}, document.title, "/");
-    return; 
-  }
-
-  // Handle login page
-  async function handleLoginState() {
-    const loginLink = document.querySelector(".login");
-    const profilePic = document.querySelector("#pp");
-    const usernameLabel = document.querySelector("#username");
-    const token = localStorage.getItem("token");
-
-    if (token) {
-      loginLink.style.display = "none";
-      profilePic.style.display = "flex";
-
-      try {
-      const response = await fetch("https://calviz-server-production.up.railway.app/profile", {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-
-        if (response.ok) {
-          const user = await response.json();
-          if (user.profile_picture) {
-            profilePic.querySelector("img").src = user.profile_picture;
-          }
-          if (user.name && usernameLabel) {
-            usernameLabel.textContent = user.name;
-          }
-        } else {
-          logout(); // invalid token
-        }
-      } catch (err) {
-        console.error("Error fetching profile:", err);
-      }
-    } else {
-      loginLink.style.display = "flex";
-      profilePic.style.display = "none";
+    if (urltoken) {
+      localStorage.setItem("token", urltoken);
+      window.history.replaceState({}, document.title, "/");
+      return;
     }
-  }
 
-  function logout() {
-    localStorage.removeItem("token");
-    location.reload();
-  }
+    // Handle login page
+    async function handleLoginState() {
+      const loginLink = document.querySelector(".login");
+      const profilePic = document.querySelector("#pp");
+      const usernameLabel = document.querySelector("#username");
+      const token = localStorage.getItem("token");
 
-  await handleLoginState();
+      if (token) {
+        loginLink.style.display = "none";
+        profilePic.style.display = "flex";
 
-      const img = document.querySelector("#hoverimage img");
+        try {
+          const response = await fetch("https://calviz-server-production.up.railway.app/profile", {
+            method: "GET",
+            headers: { Authorization: `Bearer ${token}` },
+          });
 
-      const buttonImages = {
-        integral: "profile.png",
-        derivative: "derivative.png",
-        limit: "limit.png",
-        series: "series.png"
-      };
+          if (response.ok) {
+            const user = await response.json();
 
-      function changeImage(newSrc) {
-        img.classList.add("fade-out");
-        setTimeout(() => {
-          img.src = newSrc;
-          img.classList.remove("fade-out");
-        }, 300); 
+            // ✅ Gunakan default image jika profile_picture tidak tersedia atau kosong
+            const imageUrl = user.profile_picture && user.profile_picture.trim() !== ""
+              ? user.profile_picture
+              : "default.jpg";  // ganti path ini sesuai lokasi file default kamu
+            profilePic.querySelector("img").src = imageUrl;
+
+            if (user.name && usernameLabel) {
+              usernameLabel.textContent = user.name;
+            }
+          } else {
+            logout(); // invalid token
+          }
+        } catch (err) {
+          console.error("Error fetching profile:", err);
+          // ✅ Gunakan default juga jika fetch error
+          profilePic.querySelector("img").src = "default.jpg";
+        }
+      } else {
+        loginLink.style.display = "flex";
+        profilePic.style.display = "none";
       }
+    }
 
-      for (let id in buttonImages) {
-        const btn = document.getElementById(id);
+    function logout() {
+      localStorage.removeItem("token");
+      location.reload();
+    }
 
-        btn.addEventListener("mouseenter", () => {
-          changeImage(buttonImages[id]);
-        });
-      }
-      function toggleBurger() {
-        const topnav = document.getElementById("myTopnav");
-        topnav.classList.toggle("responsive");
-      }
-      
-      // Add click listener to burger icon
-      document.querySelector(".topnav .icon").addEventListener("click", toggleBurger);
-        
-      const audio = document.getElementById('hoverAudio');
+    await handleLoginState();
 
+    // Hover image logic
+    const img = document.querySelector("#hoverimage img");
 
-      const muteBtn = document.getElementById('muteBtn');
-      const muteSm = document.getElementById('muteSm');
-      const muteIcon = document.getElementById('muteIcon');
-      const muteIconSm = document.getElementById('muteIconSm');
+    const buttonImages = {
+      integral: "profile.png",
+      derivative: "derivative.png",
+      limit: "limit.png",
+      series: "series.png"
+    };
 
-      muteBtn.addEventListener('click', () => {
-        if(audio.paused) audio.play();  // ensure audio plays on first click
-        audio.muted = !audio.muted;     // toggle mute
-        muteIcon.className = audio.muted ? "fa fa-volume-off" : "fa fa-volume-up"; // update icon
+    function changeImage(newSrc) {
+      img.classList.add("fade-out");
+      setTimeout(() => {
+        img.src = newSrc;
+        img.classList.remove("fade-out");
+      }, 300);
+    }
+
+    for (let id in buttonImages) {
+      const btn = document.getElementById(id);
+      btn.addEventListener("mouseenter", () => {
+        changeImage(buttonImages[id]);
       });
+    }
 
-      muteSm.addEventListener('click', () => {
-        if(audio.paused) audio.play();  // ensure audio plays on first click
-        audio.muted = !audio.muted;     // toggle mute
-        muteIconSm.className = audio.muted ? "fa fa-volume-off" : "fa fa-volume-up"; // update icon
-      });
-    });    
+    // Burger menu toggle
+    function toggleBurger() {
+      const topnav = document.getElementById("myTopnav");
+      topnav.classList.toggle("responsive");
+    }
+    document.querySelector(".topnav .icon").addEventListener("click", toggleBurger);
 
-  </script>
+    // Audio mute toggle
+    const audio = document.getElementById('hoverAudio');
+    const muteBtn = document.getElementById('muteBtn');
+    const muteSm = document.getElementById('muteSm');
+    const muteIcon = document.getElementById('muteIcon');
+    const muteIconSm = document.getElementById('muteIconSm');
+
+    muteBtn.addEventListener('click', () => {
+      if(audio.paused) audio.play();
+      audio.muted = !audio.muted;
+      muteIcon.className = audio.muted ? "fa fa-volume-off" : "fa fa-volume-up";
+    });
+
+    muteSm.addEventListener('click', () => {
+      if(audio.paused) audio.play();
+      audio.muted = !audio.muted;
+      muteIconSm.className = audio.muted ? "fa fa-volume-off" : "fa fa-volume-up";
+    });
+  });
+</script>
+
 </footer>
 </html>
