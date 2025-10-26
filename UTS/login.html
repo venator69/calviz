@@ -281,58 +281,30 @@ const username = document.getElementById("username");
 const password = document.getElementById("password");
 const submit = document.getElementById("submit");
 
-// Google login
-document.getElementById('google-login').addEventListener('click', () => {
-  window.location.href = 'https://calviz-server-production.up.railway.app/auth/google';
-});
+submit.addEventListener('click', async () => {
+  const nameVal = username.value.trim();
+  const passVal = password.value.trim();
+  if (!nameVal || !passVal) return alert("Please fill in all fields!");
 
-// Submit login
-submit.addEventListener('click', () => isfilledcorrectly(username, password));
-
-async function isfilledcorrectly(username, password) {
-  if (username.value === "" || password.value === "") {
-    alert("Please fill in all fields!");
-    return;
-  }
   try {
-    await submitform(username.value, password.value);
-  } catch (err) {
-    alert(`Error submitting form. Please try again. error : ${err}`);
-    console.error(err);
-  }
-}
-
-async function submitform(name, password) {
-  try {
-    const response = await fetch("https://calviz-server-production.up.railway.app/login", {
+    const res = await fetch("https://calviz-server-production.up.railway.app/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, password }),
-      credentials: "include" // supaya cookie diterima frontend
+      body: JSON.stringify({ name: nameVal, password: passVal }),
+      credentials: "include"
     });
-
-    const data = await response.json().catch(() => ({}));
-
-    if (response.ok) {
-      console.log(data.message);
-      // Redirect ke halaman utama setelah login sukses
+    const data = await res.json();
+    if (res.ok) {
+      console.log("Login sukses", data);
       window.location.href = "https://calviz.vercel.app/index.html";
     } else {
-      console.error("Login failed:", response.status);
-      alert(`Login failed, error: ${response.status}, ${data.message}`);
+      alert(`Login gagal: ${data.message}`);
     }
-  } catch (e) {
-    console.error(e);
-    alert(`Login failed, error: ${e}`);
+  } catch (err) {
+    console.error(err);
+    alert("Login error: " + err.message);
   }
-}
-
-// Toggle Burger Menu
-function toggleBurger() {
-  const topnav = document.getElementById("myTopnav");
-  topnav.classList.toggle("responsive");
-}
-document.querySelector(".topnav .icon").addEventListener("click", toggleBurger);
+});
 </script>
 
 
