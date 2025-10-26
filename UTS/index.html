@@ -621,17 +621,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   const muteBtn = document.getElementById('muteBtn');
   const muteIcon = document.getElementById('muteIcon');
   if (muteBtn) muteBtn.addEventListener('click', () => { if(audio.paused) audio.play(); audio.muted = !audio.muted; muteIcon.className = audio.muted ? "fa fa-volume-off" : "fa fa-volume-up"; });
-  profileDropdown.addEventListener('click', (e) => {
+
   // Toggle show class
-  logoutMenu.classList.toggle('show-dropdown');
+  // for logout dropdown menu
+  profileDropdown.addEventListener('click', (e) => {
+    e.stopPropagation(); // mencegah klik ditangkap document
+    logoutMenu.classList.toggle('show-dropdown');
   });
 
-  // Optional: click outside to close
   document.addEventListener('click', (e) => {
     if (!profileDropdown.contains(e.target)) {
       logoutMenu.classList.remove('show-dropdown');
     }
   });
+
 });
 </script>
 </footer>
