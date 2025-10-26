@@ -318,6 +318,9 @@ async function submitform(name, password) {
     if (response.ok) {
       console.log(data.message);
       alert("Login successfully");
+
+      window.location.href = "https://calviz.vercel.app/index.html";
+      
       } else {
         console.error("Login failed:", response.status);
         alert(`Login failed, error: ${response.status}, ${data.message}`);
