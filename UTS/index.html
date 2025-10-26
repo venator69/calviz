@@ -487,49 +487,40 @@ document.addEventListener("DOMContentLoaded", async () => {
     const loginLink = document.querySelector(".login");
     const profilePic = document.querySelector("#pp");
     const usernameLabel = document.querySelector("#username");
-    const token = getCookie("token");
 
     console.log("🧠 Checking login state...");
-    console.log("🍪 Current cookie:", document.cookie);
-    console.log("🔍 Token found in cookie:", token);
 
-    if (token) {
-      loginLink.style.display = "none";
-      profilePic.style.display = "flex";
+    try {
+      const response = await fetch("https://calviz-server-production.up.railway.app/profile", {
+        method: "GET",
+        credentials: "include", // ⬅️ penting agar cookie dikirim otomatis
+      });
 
-      try {
-        const response = await fetch("https://calviz-server-production.up.railway.app/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",  // agar cookie disimpan
-          body: JSON.stringify({ email, password }),
-        });
+      console.log("📡 Profile fetch status:", response.status);
 
-        console.log("📡 Profile fetch status:", response.status);
+      if (response.ok) {
+        const user = await response.json();
+        console.log("✅ User data:", user);
 
-        if (response.ok) {
-          const user = await response.json();
-          console.log("User data:", user);
+        // tampilkan profil
+        loginLink.style.display = "none";
+        profilePic.style.display = "flex";
 
-          // Gunakan default image jika kosong
-          const imageUrl = user.profile_picture && user.profile_picture.trim() !== ""
-            ? user.profile_picture
-            : "default.jpg";
-          profilePic.querySelector("img").src = imageUrl;
+        const imageUrl = user.profile_picture && user.profile_picture.trim() !== ""
+          ? user.profile_picture
+          : "default.jpg";
+        profilePic.querySelector("img").src = imageUrl;
 
-          if (user.name && usernameLabel) {
-            usernameLabel.textContent = user.name;
-          }
-        } else {
-          console.warn("Invalid token or session expired.");
-          logout();
+        if (user.name && usernameLabel) {
+          usernameLabel.textContent = user.name;
         }
-      } catch (err) {
-        console.error("Error fetching profile:", err);
-        profilePic.querySelector("img").src = "default.jpg";
+      } else {
+        console.warn("🚫 Not logged in or invalid token.");
+        loginLink.style.display = "flex";
+        profilePic.style.display = "none";
       }
-    } else {
-      console.log("No token found. User not logged in.");
+    } catch (err) {
+      console.error("❌ Error fetching profile:", err);
       loginLink.style.display = "flex";
       profilePic.style.display = "none";
     }
