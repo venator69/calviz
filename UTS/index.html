@@ -476,7 +476,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Store token in cookie if received via URL
   if (urltoken) {
     console.log("🔐 Token found in URL:", urltoken);
-    setCookie("token", urltoken, 1); // expires in 1 day
     console.log("🍪 Token stored in cookie:", document.cookie);
     window.history.replaceState({}, document.title, "/");
     return;
