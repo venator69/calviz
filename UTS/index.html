@@ -498,10 +498,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       profilePic.style.display = "flex";
 
       try {
-        const response = await fetch("https://calviz-server-production.up.railway.app/profile", {
-          method: "GET",
-          headers: { "Authorization": `Bearer ${token}` },
-          credentials: "include"
+        const response = await fetch("https://calviz-server-production.up.railway.app/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",  // agar cookie disimpan
+          body: JSON.stringify({ email, password }),
         });
 
         console.log("📡 Profile fetch status:", response.status);
