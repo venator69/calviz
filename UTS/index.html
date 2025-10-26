@@ -255,6 +255,47 @@
           display: block;
         }
 
+        .profile-dropdown {
+          position: relative;
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+        }
+
+        .profile-dropdown img {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+        }
+
+        .dropdown-content {
+          display: none;
+          position: absolute;
+          top: 50px;
+          right: 0;
+          background-color: #f9f9f9;
+          min-width: 100px;
+          box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+          border-radius: 5px;
+          z-index: 10;
+        }
+
+        .dropdown-content a {
+          color: black;
+          padding: 8px 12px;
+          text-decoration: none;
+          display: block;
+        }
+
+        .dropdown-content a:hover {
+          background-color: #ddd;
+        }
+
+        .profile-dropdown:hover .dropdown-content {
+          display: block;
+        }
+
+
         @media screen and (max-width: 1000px) {
           .topnav a:not(:first-child) {display: none;}
           
@@ -359,8 +400,8 @@
       <img src="default.jpg" alt="Profile picture" id="profilePic">
       <div class="dropdown-content" id="logoutMenu">
         <a href="javascript:void(0);" id="logoutBtn">Logout</a>
-  </div>
-</div>
+      </div>
+    </div>
 
     </a>
     <a href="javascript:void(0);" class="icon">
