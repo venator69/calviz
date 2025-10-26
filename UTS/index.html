@@ -479,7 +479,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       const data = await res.json().catch(()=>({}));
       if(res.ok){
         console.log("Login sukses", data);
-        setCookie("token", data.token, 1); // simpan cookie di frontend juga
         alert("Login berhasil!");
         await handleLoginState();
       } else {
