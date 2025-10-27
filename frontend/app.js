@@ -2,16 +2,26 @@
 // LOGOUT FUNCTION (Dipindahkan ke luar DOMContentLoaded)
 // -----------------------------
 async function logout() {
-    try {
-      await fetch("https://calviz-server-production.up.railway.app/logout", {
-        method: "POST",
-        credentials: "include"
-      });
-      location.reload(); // reload untuk refresh state
-    } catch (err) {
-      console.error("Logout error:", err);
-    }
+  try {
+    const res = await fetch("https://calviz-server-production.up.railway.app/logout", {
+      method: "POST",
+      credentials: "include"
+    });
+
+    console.log("Logout status:", res.status);
+    const data = await res.json().catch(() => ({}));
+    console.log("Logout response:", data);
+
+    if (res.ok) {
+      location.reload();
+    } else {
+      alert("Logout gagal: " + (data.message || res.status));
+    }
+  } catch (err) {
+    console.error("Logout error:", err);
+  }
 }
+
 
 // -----------------------------
 // PROFILE CHECK FUNCTION (Dipindahkan ke luar DOMContentLoaded)
@@ -37,19 +47,19 @@ async function handleLoginState() {
           profilePic.querySelector("img").src = data.profile_picture || "assets/default.jpg";
         }
         if (usernameLabel) usernameLabel.textContent = data.name;
-        
-        // Tampilkan tombol modul progres
-        moduleCards.forEach(card => card.classList.remove('logged-out-hide'));
-        return true;
-        
+      
+      // Tampilkan tombol modul progres
+      moduleCards.forEach(card => card.classList.remove('logged-out-hide'));
+      return true;
+      
       } else {
         // Logged Out State
         if (loginLink) loginLink.style.display = "flex";
         if (profilePic) profilePic.style.display = "none";
 
-        // Sembunyikan tombol modul progres
-        moduleCards.forEach(card => card.classList.add('logged-out-hide'));
-        return false;
+      // Sembunyikan tombol modul progres
+      moduleCards.forEach(card => card.classList.add('logged-out-hide'));
+      return false;
       }
     } catch (err) {
       console.error("Profile fetch error:", err);
