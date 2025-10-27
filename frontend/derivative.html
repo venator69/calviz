@@ -12,15 +12,24 @@
 
 <body>
     <div class="topnav" id="myTopnav">
-        <a href="index.html" class="active">CALVIZ</a>
-        <a href="index.html">Home</a>
-        <a href="riemann.html">Riemann Integral</a>
-        <a href="derivative.html">Derivative</a>
-        <a href="limit.html">L'hospital</a>
-        <a href="series.html">Taylor series</a>
-        <a href="javascript:void(0);" class="icon">
-            <i class="fa fa-bars"></i>
-        </a>
+    <a href="index.html" class="active">CALVIZ</a>
+    <a href="index.html">Home</a>
+    <a href="riemann.html">Riemann Integral</a>
+    <a href="derivative.html">Derivative</a>
+    <a href="limit.html">L'hospital</a>
+    <a href="series.html">Taylor series</a>
+    <a href="login.html" class="login">login</a>
+
+    <div class="profile-dropdown" id="pp">
+        <img src="assets/default.jpg" alt="Profile picture" id="profilePic">
+        <div class="dropdown-content" id="logoutMenu">
+        <a href="javascript:void(0);" id="logoutBtn">Logout</a>
+        </div>
+    </div>
+
+    <a href="javascript:void(0);" class="icon">
+        <i class="fa fa-bars"></i>
+    </a>
     </div>
 
     <div class="card" data-card-id="deriv-intro-1">
@@ -81,7 +90,7 @@
         f(x) = <b id="yLabel">-</b>, f(x+Δtime) = <b id="yhLabel">-</b>,
         </div>
         Legend :
-          <span style="color:red;">Red</span> is the tangent line, <span style="color:blue;">Blue</span> is the Position.
+        <span style="color:red;">Red</span> is the tangent line, <span style="color:blue;">Blue</span> is the Position.
     </div>
 
     <div class="card" style="text-align: center; max-width: 80%; margin: 2rem auto; padding: 1rem 2rem;">
