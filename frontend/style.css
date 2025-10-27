@@ -501,145 +501,85 @@ body:has(.topnav a[href="series.html"].active) canvas {
 =======================================*/
 @media screen and (max-width: 1000px) {
     /* NAVIGATION */
-    .topnav {
-        flex-direction: column; /* Susun elemen secara vertikal saat responsif */
-        align-items: flex-start;
-        position: relative;
-    }
-
     .topnav a {
         padding: 10px 12px;
         font-size: 0.9rem;
     }
-
-    .topnav .navcontent {
-        display: none; /* Sembunyikan tautan navigasi secara default */
-        width: 100%; /* Pastikan penuh lebar */
+    .topnav a.profile-dropdown{
+        right: 0;
     }
-
-    .topnav.responsive .navcontent {
-        display: block; /* Tampilkan saat responsif aktif */
-    }
-
-    .topnav.responsive .navcontent a {
-        display: block;
-        text-align: left;
-        padding: 10px 16px;
-        width: 100%;
-    }
-
-    .topnav .icon {
-        display: block;
-        position: absolute;
-        right: 10px;
-        top: 8px;
-        z-index: 1100; /* Pastikan ikon di atas elemen lain */
-        padding: 10px 12px;
-        font-size: 1.5rem;
-        color: #f2f2f2;
-        cursor: pointer;
-    }
-
     .topnav .login {
         position: absolute;
-        right: 60px;
-        top: 8px;
-        display: flex;
-        z-index: 1050;
+        right: 50px; /* Place before hamburger icon */
+        top: 0;
+        display: flex; /* Ensure it’s visible */
         padding: 10px 12px;
         font-size: 0.9rem;
     }
-
-    .topnav .profile-dropdown {
+    .navcontent{
+        display: block;
+    }
+    .topnav a:not(:first-child):not(.login):not(.icon) { display: none; }
+    .topnav .icon {
+        display: block;
         position: absolute;
-        right: 100px;
-        top: 8px;
-        display: none; /* Sembunyikan secara default */
-        z-index: 1050;
-    }
-
-    .topnav.responsive .login {
-        position: relative;
         right: 0;
-        display: block;
-        padding: 10px 16px;
+        top: 0;
     }
-
-    .topnav.responsive .profile-dropdown {
-        position: relative;
-        right: 0;
-        display: block;
-        padding: 10px 16px;
-    }
-
-    .topnav.responsive a.active {
-        text-align: left; /* Sesuaikan dengan menu vertikal */
-    }
-
-    .topnav .prof {
-        display: none; /* Sembunyikan .prof secara default */
-    }
-
-    .topnav.responsive .prof {
+    .topnav.responsive { position: relative;}
+    .topnav.responsive .icon { position: absolute; right: 0; top: 0; }
+    .topnav.responsive a { float: none; display: block; text-align: left; }
+    .topnav a.active { text-align: center; }
+    .topnav.responsive .prof{
         display: inline;
         padding-left: 8px;
-        color: white;
+        color : white;
+    }
+    
+    .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* jarak kecil antara PP & burger */
+    position: absolute;
+    right: 10px;
+    top: 8px;
     }
 
+    .topnav.responsive #pp{
+        display: none;
+    }
+
+    .topnav #pp{
+        margin-right: 0;
+    }
+    .topnav a.icon {
+        float: none; /* Prevent float: left from affecting icon */
+    }
+    .topnav .profile-dropdown {
+        position: absolute;
+        right: 50px; /* Same position as login */
+        top: 0;
+        display: none; /* Hidden by default */
+    }
     /* LAYOUT & CARDS */
-    .wrapper {
-        display: block; /* Ubah tata letak wrapper menjadi blok */
-    }
-
-    .content {
-        max-width: 100%; /* Pastikan konten penuh lebar */
-    }
-
-    .social {
-        padding: 1rem;
-    }
-
-    body:has(.butts) .card {
-        max-width: 80%; /* Optimalkan ukuran kartu di login/register */
-        margin-left: auto;
-        margin-right: auto;
-    }
-
+    .wrapper { display: block; } 
+    .content { max-width: 100%; }
+    .social { padding: 1rem; }
+    
+    /* Login/Register Mobile Card Size */
+    body:has(.butts) .card { max-width: 80%; } 
+    
     /* TITLES & TEXT */
-    .title {
-        display: none; /* Sembunyikan judul utama */
-    }
-
-    .pronoun {
-        display: block; /* Tampilkan judul mobile */
-        font-size: clamp(1.3rem, 5vw, 4rem);
-        text-align: center;
-    }
-
-    .subtitle {
-        font-size: 1rem;
-        text-align: center;
-        max-width: 100%;
-    }
-
+    .title { display: none; } 
+    .pronoun { display: Block; } /* Mobile title Index shown */
+    .subtitle { font-size: 1rem; text-align: center; max-width: 100%; }
+    
     /* IMAGES */
-    .image-container img {
-        max-width: 100%; /* Gambar responsif */
-    }
-
-    #hoverimage img {
-        width: 60%;
-        max-width: 220px;
-        height: auto;
-        padding: 1rem;
-    }
-
+    .image-container img { max-width: 100%; }
+    #hoverimage img { width: 60%; max-width: 220px; height: auto; padding: 1rem; }
+    
     /* SOCIAL ICONS */
-    .social-icons img {
-        max-width: 30px;
-        padding: 0.5rem 1rem;
-    }
-
+    .social-icons img { max-width: 30px; padding: 0.5rem 1rem; } 
     .social-icons {
         display: flex;
         align-items: center;
@@ -650,36 +590,15 @@ body:has(.topnav a[href="series.html"].active) canvas {
         padding: 0.5rem 1rem;
         justify-content: center;
     }
-
-    .links {
-        display: inline;
-    }
-
+    .links { display: inline; }
+    
     /* INPUTS & SLIDERS */
-    #n, #terms, #x, #time {
-        width: 100%; /* Input penuh lebar di mobile */
-    }
+    #n, #terms, #x, #time { width: 100%; }
 
     /* DROP AREA */
-    .drop-area {
-        height: 120px;
-        width: 160px;
-    }
-
+    .drop-area { height: 120px; width: 160px; }
+    
     /* SONG TITLE */
-    #songtitlebig {
-        display: none;
-    }
-
-    #songtitlesmall {
-        display: flex;
-        justify-content: center;
-    }
-
-    /* ANIMASI */
-    .topnav .navcontent a,
-    .topnav .login,
-    .topnav .profile-dropdown {
-        transition: all 0.3s ease-in-out; /* Animasi mulus untuk menu */
-    }
+    #songtitlebig{ display: none; }
+    #songtitlesmall { display: flex; justify-content: center; }
 }
