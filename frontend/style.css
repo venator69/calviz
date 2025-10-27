@@ -428,31 +428,6 @@ input[type=range]:hover::-webkit-slider-thumb {
     background: #fffb00;
 }
 
-
-/*=====================================
-  FEATURE: READ PROGRESS (LOCAL STORAGE)
-=======================================*/
-.card.read {
-    border-left: 8px solid #00c3ff;
-    opacity: 0.8;
-    transition: opacity 0.3s ease, border-left 0.3s ease;
-}
-.read-toggle {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    padding: 5px 10px;
-    cursor: pointer;
-    background: #e0e0e0;
-    border-radius: 5px;
-    font-size: 0.8rem;
-    user-select: none;
-}
-.card.read .read-toggle {
-    background: #00c3ff;
-    color: white;
-}
-
 /*=====================================
   CANVAS & OUTPUT STYLES
 =======================================*/
@@ -478,6 +453,21 @@ body:has(.topnav a[href="series.html"].active) canvas {
 
 .prof{
     display: none;
+}
+
+/*=====================================
+  COPYRIGHT STYLES 
+=======================================*/
+.copyright {
+    color: white; 
+    text-align: center; 
+    font-size: 0.9rem;
+    margin: 0;
+    padding: 1rem 0; 
+}
+
+.logged-out-hide {
+    display: none !important; 
 }
 
 /*=====================================
