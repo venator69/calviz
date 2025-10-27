@@ -429,7 +429,12 @@ input[type=range]:hover::-webkit-slider-thumb {
     background: #fffb00;
 }
 
+#login{
+    display: flex;         
+    margin-left: auto;
+}
 .login{
+    display: flex;         
     margin-left: auto;
 }
 /*=====================================
