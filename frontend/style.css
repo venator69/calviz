@@ -19,6 +19,7 @@ body:has(.topnav a[href="index.html"].active) {
     background: linear-gradient(45deg, #6200ff, #00c3ff);
 }
 
+
 .card {
     padding: 2rem;
     margin: 2rem;
@@ -454,7 +455,9 @@ body:has(.topnav a[href="series.html"].active) canvas {
 .prof{
     display: none;
 }
-
+.copyright{
+    color: white;
+}
 /*=====================================
   COPYRIGHT STYLES 
 =======================================*/
