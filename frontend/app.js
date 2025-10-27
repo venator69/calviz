@@ -98,7 +98,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Toggle show class
   // for logout dropdown menu
-  /*
   profileDropdown.addEventListener('click', (e) => {
     e.stopPropagation(); // mencegah klik ditangkap document
     logoutMenu.classList.toggle('show-dropdown');
@@ -109,5 +108,4 @@ document.addEventListener("DOMContentLoaded", async () => {
       logoutMenu.classList.remove('show-dropdown');
     }
   });
-*/
 });
