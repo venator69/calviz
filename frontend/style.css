@@ -488,6 +488,9 @@ body:has(.topnav a[href="series.html"].active) canvas {
     .topnav a.profile-dropdown{
         right: 0;
     }
+    .topnav a.login{
+        right: 0;
+    }
     .navcontent{
         display: block;
     }
