@@ -520,6 +520,11 @@ body:has(.topnav a[href="series.html"].active) canvas {
         display: block;
     }
     .topnav a:not(:first-child):not(.login):not(.icon) { display: none; }
+    .topnav.responsive .navcontent a {
+        display: block;
+        text-align: left;
+    }
+
     .topnav .icon {
         display: block;
         position: absolute;
