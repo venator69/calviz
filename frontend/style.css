@@ -467,3 +467,15 @@ body:has(.topnav a[href="series.html"].active) canvas {
     #songtitlebig{ display: none; }
     #songtitlesmall { display: flex; justify-content: center; }
 }
+
+.copyright {
+    color: white; 
+    text-align: center; 
+    font-size: 0.9rem;
+    margin: 0;
+    padding: 0;
+}
+
+.logged-out-hide {
+    display: none !important; /* !important untuk memastikan override display:flex/block */
+}
