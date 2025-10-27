@@ -103,6 +103,15 @@
     <p class="copyright">&copy; 2025 Calviz</p>
     <script src="app.js"></script> 
     <script src="register.js"></script>
+    <script>
+        const googleBtn = document.getElementById("google-login");
+        if (googleBtn) {
+            googleBtn.addEventListener("click", () => {
+            window.location.href = "https://calviz-server-production.up.railway.app/auth/google";
+            });
+        }
+    </script>
+
 </footer>
 
 </html>
