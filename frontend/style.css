@@ -19,7 +19,6 @@ body:has(.topnav a[href="index.html"].active) {
     background: linear-gradient(45deg, #6200ff, #00c3ff);
 }
 
-.description
 
 .card {
     padding: 2rem;
