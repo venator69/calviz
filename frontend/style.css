@@ -375,9 +375,6 @@ a {
     box-shadow: none; 
 }
 
-.copyright {
-    color: #ffffff;
-}
 
 .profile-dropdown:hover .dropdown-content {
     display: block;
@@ -459,7 +456,7 @@ input[type=range]:hover::-webkit-slider-thumb {
 }
 
 /*=====================================
-    CANVAS & OUTPUT STYLES
+  CANVAS & OUTPUT STYLES
 =======================================*/
 canvas {
     width: 100%;
@@ -484,7 +481,9 @@ body:has(.topnav a[href="series.html"].active) canvas {
 .prof{
     display: none;
 }
-
+.copyright{
+    color: white;
+}
 /*=====================================
     MEDIA QUERIES (RESPONSIVENESS)
 =======================================*/
