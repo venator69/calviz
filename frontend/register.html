@@ -13,14 +13,26 @@
 <body>
     <div class="topnav" id="myTopnav">
         <a href="index.html" class="active">CALVIZ</a>
-        <a href="index.html">Home</a>
-        <a href="riemann.html">Riemann Integral</a>
-        <a href="derivative.html">Derivative</a>
-        <a href="limit.html">L'hospital</a>
-        <a href="series.html">Taylor series</a>
+        <div class="navcontent">
+          <a href="index.html"></a>
+          <a href="index.html">Home</a>
+          <a href="riemann.html">Riemann Integral</a>
+          <a href="derivative.html">Derivative</a>
+          <a href="series.html">Taylor series</a>
+          <a href="login.html" class="login">login</a>
+        </div>
+          <div class="profile-dropdown" id="pp">
+            <img src="assets/default.jpg" alt="Profile picture" id="profilePic">
+            <span class="prof" id="logoutBtn">  logout</span>
+            <div class="dropdown-content" id="logoutMenu">
+              <a href="javascript:void(0);" id="logoutBtn">Logout</a>
+            </div>
+        </div>
+      <div class="topnav-right">
         <a href="javascript:void(0);" class="icon">
-            <i class="fa fa-bars"></i>
+          <i class="fa fa-bars"></i>
         </a>
+      </div>
     </div>
 
     <div class="card">
@@ -86,162 +98,12 @@
             </div>
         </div>
     </div>
-
-<script>
-const dropArea = document.getElementById('drop-area');
-const preview = document.getElementById('preview');
-const fileElem = document.getElementById('fileElem');
-const email = document.getElementById('email');
-const username = document.getElementById('username');
-const password = document.getElementById('password');
-const passwordConfirm = document.getElementById('passwordConfirm');
-const submit = document.getElementById('submit');
-let file = null;
-let image = false;
-
-// helper function
-function valid(email) {
-    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return pattern.test(email);
-}
-function validUsername(username) {
-    return username.trim() !== "" && !/\s/.test(username);
-}
-
-function isValidLength(username) {
-    return username.length >= 8 && username.length <= 18;
-}
-
-submit.addEventListener('click', (e) => {
-    e.preventDefault();
-    isfilledcorrectly(username, password, passwordConfirm, email, image);
-});
-
-async function isfilledcorrectly(username, password, passwordConfirm, email, image){
-    if (username.value === "" || password.value === "" || passwordConfirm.value === "" || email.value === "") {
-        alert("Please fill in all fields!");
-        return;
-    }
-    if (!image) {
-        alert("Please upload a profile picture!");
-        return;
-    }
-    if (password.value !== passwordConfirm.value) {
-        alert("Passwords do not match!");
-        return;
-    }
-    if (!validUsername(username.value) || !validUsername(password.value)) {
-        alert("username or password can't include space");
-        return;
-    }
-    if (!isValidLength(username.value) || !isValidLength(password.value)) {
-        alert("username or password have to be between 8 to 16 letters and may include special characters and numbers");
-        return;
-    }
-    if (!valid(email.value)){
-        alert("Please Enter the right Email Format!");
-        return;
-    }
-    try {
-        await submitform(username.value, password.value, email.value, file);
-    } catch (err) {
-        alert(`Error submitting form. Please try again. error : ${err}`);
-        console.error(err);
-    }
-}
-
-async function submitform(name, password, email, file) {
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('password', password);
-    formData.append('email', email);
-    formData.append('profile', file);
-
-    try {
-        const response = await fetch('https://calviz-server-production.up.railway.app/register', { 
-            method: "POST",
-            body: formData
-        });
-
-        let data;
-        try {
-            data = await response.json();
-        } catch (err) {
-            const text = await response.text();
-            console.error("Response is not JSON:", text);
-            alert("Registration failed: server returned invalid response");
-            return;
-        }
-
-        if (response.ok) {
-            console.log(data);
-            alert("Registered successfully");
-        } else {
-            console.error("Registration failed:", data);
-            alert(`Registration failed: ${data.message || response.status}`);
-        }
-
-    } catch (e) {
-        console.error(e);
-        alert(`Registration failed: ${e}`);
-    }
-}
-
-
-['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-    dropArea.addEventListener(eventName, e => e.preventDefault());
-});
-
-// on-click event
-dropArea.addEventListener('click', () => fileElem.click());
-fileElem.addEventListener('change', (e) => handleFiles(e.target.files));
-
-// highlight color when dragged over element
-
-dropArea.addEventListener('dragover', () => {
-    dropArea.style.backgroundColor = '#e0e0e0';
-});
-
-dropArea.addEventListener('dragleave', () => {
-    dropArea.style.backgroundColor = '';
-});
-
-dropArea.addEventListener('drop', (e) => {
-    dropArea.style.backgroundColor = '';
-    const files = e.dataTransfer.files;
-    handleFiles(files);
-});
-
-function handleFiles(files) {
-    const f = files[0];
-    if (!f) return;
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        const img = document.createElement('img');
-        img.src = e.target.result;
-        img.style.maxWidth = '120px';
-        img.style.maxHeight = '90px';
-        img.style.margin = '10px';
-        preview.innerHTML = '';
-        preview.appendChild(img);
-    };
-
-    image = true;
-    file = f;           
-    reader.readAsDataURL(f); 
-}
-
-// Toggle Burger Menu
-function toggleBurger() {
-    const topnav = document.getElementById("myTopnav");
-    topnav.classList.toggle("responsive");
-}
-
-// Add click listener to burger icon
-document.querySelector(".topnav .icon").addEventListener("click", toggleBurger);
-</script>
-
-
 </body>
+
+<footer>
+    <p class="copyright">&copy; 2025 Calviz</p>
+    <script src="app.js"></script> 
+    <script src="register.js"></script>
+</footer>
+
 </html>

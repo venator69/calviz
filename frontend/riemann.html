@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
     <link rel="stylesheet" href="style.css"> 
     
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -15,11 +14,10 @@
 </head>
 <body>
     <div class="topnav" id="myTopnav">
-        <a href="index.html" class="active">CALVIZ</a>
+        <a href="index.html">CALVIZ</a>
         <a href="index.html">Home</a>
-        <a href="riemann.html">Riemann Integral</a>
+        <a href="riemann.html" class="active">Riemann Integral</a>
         <a href="derivative.html">Derivative</a>
-        <a href="limit.html">L'hospital</a>
         <a href="series.html">Taylor series</a>
         <a href="javascript:void(0);" class="icon">
             <i class="fa fa-bars"></i>
@@ -31,6 +29,8 @@
             <div class="title">
                 Introduction to Integrals
             </div>
+            <div class="pronoun">Introduction to</div>
+            <div class="pronoun">Integrals</div>
         </div>
         <div class="subtitle">
             Area under a curved boundary
@@ -146,319 +146,20 @@
         </div>
     </div>
     
-    <div class="card" style="text-align: center; max-width: 80%; margin: 2rem auto; padding: 1rem 2rem;">
-        <div class="subtitle" style="padding-bottom: 0;">Module Status: Riemann Integral</div>
-        <button id="module-complete-toggle" 
-                class="selection" 
-                style="background-color: #6200ff; color: white; border: none; font-size: 1.2rem;">
-            Mark Module as Complete
-        </button>
-    </div>
-
-    <div class="social">
-        <div class="content">
-            <div class="subtitle">My Socials : </div>
-        <div class="socials">
-            <a href ="https://discord.com/users/864557474853290034">
-                <div class="social-icons">
-                    <img src="assets/discord.png" alt="Profile picture"><span class="links">DISCORD</span>
-                </div>
-            </a>
-            <a href ="https://www.instagram.com/kletka69420/?next=%2F">     
-                <div class="social-icons">
-                    <img src="assets/ig.png" alt="ig"><span class="links">INSTAGRAM</span>
-                </div>
-            </a>
-            <a href ="https://www.linkedin.com/feed/?trk=guest_homepage-basic_google-one-tap-submit">
-                <div class="social-icons">
-                    <img src="assets/linkedin.png" alt="Profile picture"><span class="links">LINKEDIN</span>
-                </div>
-            </a>
-            <a href="https://www.youtube.com/@transracialtrain9151">
-                <div class="social-icons">
-                    <img src="assets/youtube.png" alt="Profile picture"><span class="links">YOUTUBE</span>
-                </div>
-            </a>
-            <a href="https://github.com/venator69">
-                <div class="social-icons">
-                    <img src="assets/github.png" alt="Profile picture"><span class="links">GITHUB</span>
-                </div>
-            </a>
-        </div>
-    </div>
-    <script>
-        const canvas = document.getElementById('c');
-        const ctx = canvas.getContext('2d');
-        const moduleToggleButton = document.getElementById('module-complete-toggle');
-
-        // Function maps (for presets)
-        const fnMap = {
-            'sin(x)+1': x => Math.sin(x) + 1,
-            '-0.5*x+3': x => -0.5 * x + 3,
-            '-x^2+4': x => -x * x + 4,
-            '-x^3+8': x => -x * x * x + 8,
-            'e^x': x => Math.exp(x)
-        };
-
-        const fnInteg = {
-            'sin(x)+1': x => -Math.cos(x) + x,
-            '-0.5*x+3': x => -0.25 * x * x + 3 * x,
-            '-x^2+4': x => -1/3 * x * x * x + 4 * x,
-            '-x^3+8': x => -1/4 * x * x * x * x + 8 * x,
-            'e^x': x => Math.exp(x)
-        };
-
-        // Get HTML elements
-        const fnSelect = document.getElementById('fnSelect');
-        const fnCustomInput = document.getElementById('fnCustomInput');
-        const methodInput = document.getElementById('method');
-        const aInput = document.getElementById('a');
-        const bInput = document.getElementById('b');
-        const nInput = document.getElementById('n');
-        const nLabel = document.getElementById('nLabel');
-        const rsumEl = document.getElementById('rsum');
-        const integEl = document.getElementById('integ');
-        const errEl = document.getElementById('err');
-        const customNote = document.getElementById('customNote');
-
-        let currentFunctionEvaluator;
-        let isCustomMode = false;
-
-        // Function to compile and evaluate the new function using Math.js (only for custom input)
-        function compileCustomFunction(fnString) {
-            try {
-                const compiled = math.compile(fnString);
-                currentFunctionEvaluator = (x) => compiled.evaluate({ x: x });
-                return true;
-            } catch (e) {
-                console.error("Syntax error in custom function:", e.message);
-                rsumEl.textContent = "Syntax Error";
-                return false;
-            }
-        }
-        
-        // Helper to evaluate the currently set function
-        function evaluateFn(x) {
-            if (currentFunctionEvaluator) {
-                try {
-                    return currentFunctionEvaluator(x);
-                } catch (e) {
-                    return NaN; // Handle evaluation errors
-                }
-            }
-            return 0;
-        }
-
-        // Draw axes
-        function drawAxes(a, b, minY, maxY) {
-            ctx.strokeStyle = '#000';
-            ctx.lineWidth = 2;
-
-            const x0 = (0 - a) / (b - a) * canvas.width;
-            ctx.beginPath();
-            ctx.moveTo(x0, 0);
-            ctx.lineTo(x0, canvas.height);
-            ctx.stroke();
-
-            const y0 = canvas.height - (0 - minY) / (maxY - minY) * canvas.height;
-            ctx.beginPath();
-            ctx.moveTo(0, y0);
-            ctx.lineTo(canvas.width, y0);
-            ctx.stroke();
-        }
-
-        // Draw Riemann sum and return total sum
-        function drawRiemann(a, b, n, method) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Find min/max for scaling
-            let minY = Infinity, maxY = -Infinity;
-            const pointsToSample = 200;
-            for (let i = 0; i <= pointsToSample; i++) {
-                const x = a + (b - a) * i / pointsToSample;
-                const y = evaluateFn(x);
-                if (y < minY) minY = y;
-                if (y > maxY) maxY = y;
-            }
-            
-            minY = Math.min(minY, 0);
-            maxY = Math.max(maxY, 0);
-            
-            const yRange = maxY - minY;
-            minY -= yRange * 0.1;
-            maxY += yRange * 0.1;
-
-            drawAxes(a, b, minY, maxY);
-
-            let riesum = 0;
-            const dx = (b - a) / n;
-
-            // Draw Riemann Rectangles
-            for (let i = 0; i < n; i++) {
-                let x = a + i * dx;
-                let height;
-
-                if (method === 'left') height = evaluateFn(x);
-                else if (method === 'right') height = evaluateFn(x + dx);
-                else if (method === 'mid') height = evaluateFn(x + dx/2);
-                
-                riesum += dx * height;
-
-                const scaledX = (x - a) / (b - a) * canvas.width;
-                const scaledDX = dx / (b - a) * canvas.width;
-                
-                const scaledY0 = canvas.height - (0 - minY) / (maxY - minY) * canvas.height;
-                const scaledY = canvas.height - (height - minY) / (maxY - minY) * canvas.height;
-                
-                const rectHeight = Math.abs(scaledY - scaledY0);
-                const rectY = Math.min(scaledY, scaledY0); 
-
-                ctx.fillStyle = (height >= 0) ? '#00cfa2' : '#ff6347'; 
-                ctx.fillRect(scaledX, rectY, scaledDX, rectHeight);
-            }
-
-            // Draw the function curve
-            ctx.beginPath();
-            ctx.strokeStyle = '#08101a';
-            ctx.lineWidth = 3;
-            for (let i = 0; i <= 500; i++) {
-                const x = a + (b - a) * i / 500;
-                const y = evaluateFn(x);
-                const px = (x - a) / (b - a) * canvas.width;
-                const py = canvas.height - (y - minY) / (maxY - minY) * canvas.height;
-                
-                if (isFinite(py)) {
-                    if (i === 0) ctx.moveTo(px, py);
-                    else ctx.lineTo(px, py);
-                } else {
-                    ctx.moveTo(px, py); 
-                }
-            }
-            ctx.stroke();
-
-            return riesum;
-        }
-
-        // Handles showing/hiding the custom input box
-        function toggleCustomInput() {
-            isCustomMode = fnSelect.value === 'custom';
-
-            if (isCustomMode) {
-                fnCustomInput.classList.remove('hidden');
-                integEl.style.display = 'none';
-                errEl.style.display = 'none';
-                customNote.style.display = 'inline';
-            } else {
-                fnCustomInput.classList.add('hidden');
-                integEl.style.display = 'inline';
-                errEl.style.display = 'inline';
-                customNote.style.display = 'none';
-            }
-            update();
-        }
-
-        // Update everything
-        function update() {
-            const method = methodInput.value;
-            const a = parseFloat(aInput.value);
-            const b = parseFloat(bInput.value);
-            const n = parseInt(nInput.value);
-
-            if (isNaN(a) || isNaN(b) || a >= b) {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                rsumEl.textContent = "Invalid bounds [a, b]!";
-                integEl.textContent = "-";
-                errEl.textContent = "-";
-                return;
-            }
-
-            nLabel.textContent = n;
-
-            let riesum;
-            let exact = NaN;
-
-            if (isCustomMode) {
-                const fnString = fnCustomInput.value;
-                if (compileCustomFunction(fnString)) {
-                    riesum = drawRiemann(a, b, n, method);
-                } else {
-                    return; 
-                }
-                integEl.textContent = "-";
-                errEl.textContent = "-";
-            } else {
-                const fnKey = fnSelect.value;
-                currentFunctionEvaluator = fnMap[fnKey];
-                riesum = drawRiemann(a, b, n, method);
-
-                const integFn = fnInteg[fnKey];
-                exact = integFn(b) - integFn(a);
-                
-                integEl.textContent = exact.toFixed(6);
-                errEl.textContent = Math.abs(riesum - exact).toFixed(6);
-            }
-
-            if (!isNaN(riesum)) {
-                 rsumEl.textContent = riesum.toFixed(6);
-            } else {
-                 rsumEl.textContent = "-";
-            }
-        }
-
-        // Event listeners
-        fnSelect.addEventListener('change', toggleCustomInput); 
-        fnCustomInput.addEventListener('input', update);
-        methodInput.addEventListener('change', update);
-        aInput.addEventListener('input', update);
-        bInput.addEventListener('input', update);
-        nInput.addEventListener('input', update);
-
-        // Initial draw
-        toggleCustomInput(); 
-
-        // Toggle Burger Menu
-        function toggleBurger() {
-            const topnav = document.getElementById("myTopnav");
-            topnav.classList.toggle("responsive");
-        }
-        document.querySelector(".topnav .icon").addEventListener("click", toggleBurger);
-
-
-        /*************************************
-         LOCAL STORAGE MODULE PROGRESS TRACKER
-        **************************************/
-
-        const MODULE_ID = 'riemann'; 
-        const STORAGE_KEY_MODULE = `calviz_module_${MODULE_ID}_complete`;
-        
-        function loadModuleStatus() {
-            const isComplete = localStorage.getItem(STORAGE_KEY_MODULE) === 'true';
-            updateModuleButton(isComplete);
-        }
-
-        function updateModuleButton(isComplete) {
-            if (isComplete) {
-                moduleToggleButton.textContent = 'Module Complete ✓';
-                moduleToggleButton.style.backgroundColor = '#00a6cf';
-                document.querySelectorAll('.card').forEach(card => card.classList.add('read'));
-            } else {
-                moduleToggleButton.textContent = 'Mark Module as Complete';
-                moduleToggleButton.style.backgroundColor = '#6200ff';
-                document.querySelectorAll('.card').forEach(card => card.classList.remove('read'));
-            }
-        }
-
-        window.toggleModuleStatus = function() {
-            const isCurrentlyComplete = localStorage.getItem(STORAGE_KEY_MODULE) === 'true';
-            const newStatus = !isCurrentlyComplete;
-            
-            localStorage.setItem(STORAGE_KEY_MODULE, newStatus ? 'true' : 'false');
-            updateModuleButton(newStatus);
-        }
-        
-        moduleToggleButton.addEventListener('click', window.toggleModuleStatus);
-        document.addEventListener('DOMContentLoaded', loadModuleStatus); 
-
-    </script>
+    <div class="card module-status-card logged-out-hide" data-card-id="riemann-module-status" style="text-align: center; max-width: 80%; margin: 2rem auto; padding: 1rem 2rem;">
+    <div class="subtitle" style="padding-bottom: 0;">Module Status: Riemann Integral</div>
+    <button id="module-complete-toggle" 
+            class="selection" 
+            style="background-color: #6200ff; color: white; border: none; font-size: 1.2rem;">
+        Mark Module as Complete
+    </button>
+</div>
 </body>
+
+<footer>
+    <p class="copyright">&copy; 2025 Calviz</p>
+    <script src="app.js"></script> 
+    <script src="riemann.js"></script>
+</footer>
+
 </html>

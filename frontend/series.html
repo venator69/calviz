@@ -16,14 +16,26 @@
 <body>
     <div class="topnav" id="myTopnav">
         <a href="index.html" class="active">CALVIZ</a>
-        <a href="index.html">Home</a>
-        <a href="riemann.html">Riemann Integral</a>
-        <a href="derivative.html">Derivative</a>
-        <a href="limit.html">L'hospital</a>
-        <a href="series.html">Taylor series</a>
+        <div class="navcontent">
+          <a href="index.html"></a>
+          <a href="index.html">Home</a>
+          <a href="riemann.html">Riemann Integral</a>
+          <a href="derivative.html">Derivative</a>
+          <a href="series.html">Taylor series</a>
+          <a href="login.html" class="login">login</a>
+        </div>
+          <div class="profile-dropdown" id="pp">
+            <img src="assets/default.jpg" alt="Profile picture" id="profilePic">
+            <span class="prof" id="logoutBtn">  logout</span>
+            <div class="dropdown-content" id="logoutMenu">
+              <a href="javascript:void(0);" id="logoutBtn">Logout</a>
+            </div>
+        </div>
+      <div class="topnav-right">
         <a href="javascript:void(0);" class="icon">
-            <i class="fa fa-bars"></i>
+          <i class="fa fa-bars"></i>
         </a>
+      </div>
     </div>
 
     <div class="card" data-card-id="series-intro-1">
@@ -31,6 +43,8 @@
             <div class="title">
                 Introduction to Series
             </div>
+            <div class="pronoun">Introduction to</div>
+            <div class="pronoun">Series</div>
         </div>
         <div class="subtitle">
             Infinite series
@@ -159,8 +173,8 @@
         </div>
     </div>
     
-    <div class="card" style="text-align: center; max-width: 80%; margin: 2rem auto; padding: 1rem 2rem;">
-        <div class="subtitle" style="padding-bottom: 0;">Module Status: Taylor Series</div>
+    <div class="card module-status-card logged-out-hide" data-card-id="series-module-status" style="text-align: center; max-width: 80%; margin: 2rem auto; padding: 1rem 2rem;">
+    <div class="subtitle" style="padding-bottom: 0;">Module Status: Taylor Series</div>
         <button id="module-complete-toggle" 
                 class="selection" 
                 style="background-color: #6200ff; color: white; border: none; font-size: 1.2rem;">
@@ -168,37 +182,6 @@
         </button>
     </div>
 
-    <div class="social">
-        <div class="content">
-            <div class="subtitle">My Socials : </div>
-        <div class="socials">
-            <a href ="https://discord.com/users/864557474853290034">
-                <div class="social-icons">
-                    <img src="assets/discord.png" alt="Profile picture"><span class="links">DISCORD</span>
-                </div>
-            </a>
-            <a href ="https://www.instagram.com/kletka69420/?next=%2F">      
-                <div class="social-icons">
-                    <img src="assets/ig.png" alt="ig"><span class="links">INSTAGRAM</span>
-                </div>
-            </a>
-            <a href ="https://www.linkedin.com/feed/?trk=guest_homepage-basic_google-one-tap-submit">
-                <div class="social-icons">
-                    <img src="assets/linkedin.png" alt="Profile picture"><span class="links">LINKEDIN</span>
-                </div>
-            </a>
-            <a href="https://www.youtube.com/@transracialtrain9151">
-                <div class="social-icons">
-                    <img src="assets/youtube.png" alt="Profile picture"><span class="links">YOUTUBE</span>
-                </div>
-            </a>
-            <a href="https://github.com/venator69">
-                <div class="social-icons">
-                    <img src="assets/github.png" alt="Profile picture"><span class="links">GITHUB</span>
-                </div>
-            </a>
-        </div>
-    </div>
     <script>
         const canvas = document.getElementById("series");
         const ctx = canvas.getContext("2d");
@@ -506,4 +489,11 @@
 
     </script>
 </body>
+
+<footer>
+    <p class="copyright">&copy; 2025 Calviz</p>
+    <script src="app.js"></script> 
+    <script src="series.js"></script>
+</footer>
+
 </html>

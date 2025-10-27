@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css"> 
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <link rel="stylesheet" href="style.css">
     <title>Calviz</title>
 </head>
 
@@ -16,7 +16,6 @@
     <a href="index.html">Home</a>
     <a href="riemann.html">Riemann Integral</a>
     <a href="derivative.html">Derivative</a>
-    <a href="limit.html">L'hospital</a>
     <a href="series.html">Taylor series</a>
     <a href="javascript:void(0);" class="icon">
       <i class="fa fa-bars"></i>
@@ -53,76 +52,21 @@
     </div>
     <div class="description">
       <div class="image-container">
-        <img src="assets/google.webp" alt="google" class="auth">
-        <img src="assets/github.png" alt="github" class="auth">
+        <img src="google.webp" alt="google" class="auth" id="google-login">
       </div>
     </div>
     
     <div class="description">
-      didn't have an account? <a href="register.html" style="color: #6200ff; font-weight: bolder;">Register here</a>
+      Didn't have an account? <a href="register.html" style="color: #6200ff; font-weight: bolder;">Register here</a>
     </div>
 
-
   </div>
-
-<script>
-username = document.getElementById("username");
-password = document.getElementById("password");
-submit = document.getElementById("submit");
-
-submit.addEventListener('click', () => isfilledcorrectly(username, password))
-async function isfilledcorrectly(){
-  if (username.value === "" || password.value === "") {
-    alert("Please fill in all fields!");
-    return;
-  }
-  try {
-      await submitform(username.value, password.value);
-    } catch (err) {
-      alert(`Error submitting form. Please try again. error : ${err}`);
-      console.error(err);
-    }
-}
-
-async function submitform(name, password) {
-  // Construct a FormData instance
-  const formData = new FormData();
-
-  // Add the data
-  formData.append('name', name);
-  formData.append('password', password);
-
-  try {
-    const response = await fetch("http://localhost:3000/login", {
-      method: "POST",
-      // Set the FormData instance as the request body
-      body: formData
-    });
-    const data = await response.json().catch(() => ({}));
-    if (response.ok) {
-      console.log(data.message);
-      alert("Login successfully");
-      } else {
-        console.error("Login failed:", response.status);
-        alert(`Login failed, error: ${response.status}, ${data.message}`);
-      }
-    } catch (e) {
-      console.error(e);
-      alert(`Login failed, error: ${e}`);
-    }
-}
-
-
-// Toggle Burger Menu
-function toggleBurger() {
-  const topnav = document.getElementById("myTopnav");
-  topnav.classList.toggle("responsive");
-}
-
-// Add click listener to burger icon
-document.querySelector(".topnav .icon").addEventListener("click", toggleBurger);
-</script>
-
-
 </body>
+
+<footer>
+    <p class="copyright">&copy; 2025 Calviz</p>
+    <script src="app.js"></script> 
+    <script src="auth.js"></script>
+</footer>
+
 </html>
