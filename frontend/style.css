@@ -602,4 +602,16 @@ body:has(.topnav a[href="series.html"].active) canvas {
     /* SONG TITLE */
     #songtitlebig{ display: none; }
     #songtitlesmall { display: flex; justify-content: center; }
+
+    body.logged-in .topnav .login {
+    display: none !important;
+    }
+
+    /* Pastikan profile dropdown tetap muncul */
+    body.logged-in .topnav .profile-dropdown {
+        display: flex !important;
+        right: 10px;
+        top: 0;
+        position: absolute;
+    }
 }

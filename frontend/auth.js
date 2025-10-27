@@ -13,6 +13,7 @@ async function loginUser(name, password) {
     const data = await res.json().catch(() => ({}));
     if (res.ok) {
       console.log("Login sukses", data);
+      document.body.classList.add('logged-in');
       alert("Login berhasil!");
       // Gunakan window.location.href untuk redirect, seperti kode asli
       window.location.href = "index.html"; // Mengarahkan ke index.html
