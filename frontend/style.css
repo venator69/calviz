@@ -545,7 +545,15 @@ body:has(.topnav a[href="series.html"].active) canvas {
     .topnav #pp{
         margin-right: 0;
     }
-
+    .topnav a.icon {
+        float: none; /* Prevent float: left from affecting icon */
+    }
+    .topnav .profile-dropdown {
+        position: absolute;
+        right: 50px; /* Same position as login */
+        top: 0;
+        display: none; /* Hidden by default */
+    }
     /* LAYOUT & CARDS */
     .wrapper { display: block; } 
     .content { max-width: 100%; }
