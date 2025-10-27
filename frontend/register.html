@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css"> 
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <title>Calviz</title>
+    </head>
+
+<body>
+    <div class="topnav" id="myTopnav">
+        <a href="index.html" class="active">CALVIZ</a>
+        <div class="navcontent">
+          <a href="index.html"></a>
+          <a href="index.html">Home</a>
+          <a href="riemann.html">Riemann Integral</a>
+          <a href="derivative.html">Derivative</a>
+          <a href="series.html">Taylor series</a>
+          <a href="login.html" class="login">login</a>
+        </div>
+          <div class="profile-dropdown" id="pp">
+            <img src="assets/default.jpg" alt="Profile picture" id="profilePic">
+            <span class="prof" id="logoutBtn">  logout</span>
+            <div class="dropdown-content" id="logoutMenu">
+              <a href="javascript:void(0);" id="logoutBtn">Logout</a>
+            </div>
+        </div>
+      <div class="topnav-right">
+        <a href="javascript:void(0);" class="icon">
+          <i class="fa fa-bars"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="card">
+        <div class="title">
+            Register
+        </div>
+
+        <div class="subtitle">
+            Enter your Email Address :
+        </div>
+
+        <div class="description">
+            <input type="email" class="selection" placeholder="Email Address" id="email"/>
+        </div>
+
+        <div class="subtitle">
+            Enter your Username :
+        </div>
+
+        <div class="description">
+            <input type="text" class="selection" placeholder="Username" id="username"/>
+        </div>
+
+        <div class="subtitle">
+            Enter your Password :
+        </div>
+        <div class="description">
+            <input type="password" class="selection" placeholder="Password" id="password"/>
+        </div>
+
+        <div class="subtitle">
+            Confirm your Password :
+        </div>
+        <div class="description">
+            <input type="password" class="selection" placeholder="password confirm" id="passwordConfirm" />
+        </div>
+
+        <div class="subtitle">
+            Enter your Profile Picture :
+        </div>
+
+        <div class="drop-area" id="drop-area">
+            <div id="preview">
+                Drag & Drop your files here
+            </div>
+        </div>
+
+        <input type="file" id="fileElem" accept="image/*" style="display:none">
+
+        <div class="buttons">
+            <button type="submit" id="submit" class="butts">
+                Submit
+            </button>
+        </div>
+        
+        <div class="description">
+            <span class = "oauth">Or login with:</span>
+        </div>
+        <div class="description">
+            <div class="image-container">
+                <img src="assets/google.webp" alt="google" class="auth">
+                <img src="assets/github.png" alt="github" class="auth">
+            </div>
+        </div>
+    </div>
+</body>
+
+<footer>
+    <p class="copyright">&copy; 2025 Calviz</p>
+    <script src="app.js"></script> 
+    <script src="register.js"></script>
+</footer>
+
+</html>

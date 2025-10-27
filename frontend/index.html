@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css"> 
+    <title>Calviz</title>
+</head>
+
+<div class="topnav" id="myTopnav">
+    <a href="index.html" class="active">CALVIZ</a>
+    <div class="navcontent">
+      <a href="index.html"></a>
+      <a href="index.html">Home</a>
+      <a href="riemann.html">Riemann Integral</a>
+      <a href="derivative.html">Derivative</a>
+      <a href="series.html">Taylor series</a>
+      <a href="login.html" class="login">login</a>
+    </div>
+      <div class="profile-dropdown" id="pp">
+        <img src="assets/default.jpg" alt="Profile picture" id="profilePic">
+        <span class="prof" id="logoutBtn">  logout</span>
+        <div class="dropdown-content" id="logoutMenu">
+          <a href="javascript:void(0);" id="logoutBtn">Logout</a>
+        </div>
+    </div>
+  <div class="topnav-right">
+    <a href="javascript:void(0);" class="icon">
+      <i class="fa fa-bars"></i>
+    </a>
+  </div>
+</div>
+
+  <div class="wrapper">
+    <div class="content" id="hoverBtn">
+      <audio loop id="hoverAudio">
+      <source src="assets/Autopilot.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+      </audio>
+      <div class="typewriter">
+        <div class="title"> Welcome to CALVIZ !!</div>
+        <div class="pronoun">Welcome to</div>
+        <div class="pronoun">CALVIZ !!</div>
+      </div>
+      <div class="subtitle">Interactive calculus visualization for visual learners</div> 
+      <div class="buttons">
+        <a href="riemann.html">
+          <button class="butts" id="integral">Riemann Integral</button>
+        </a>
+        <a href="derivative.html">
+          <button class="butts" id="derivative">Derivative</button>
+        </a>
+      </div>
+            <div class="buttons">
+        <a href="series.html">
+          <button class="butts" id="series">Taylor series</button>
+        </a>
+      </div>
+    </div>
+    <div class="image-container">
+      <div id="hoverimage">
+        <img src="assets/profile.png" alt="Profile picture">
+      </div>
+      <div class="songtitle" id="songtitlebig">
+        <button id="muteBtn">
+          <i id="muteIcon" class="fa fa-volume-off"></i> 
+        </button>
+        <i> Song : Autopilot - Kitsch</i>
+      </div>
+    </div>
+      <div class="songtitle" id="songtitlesmall">
+        <button id="muteSm">
+          <i id="muteIconSm" class="fa fa-volume-off"></i> 
+        </button>
+        <i> Song : Autopilot - Kitsch</i>
+      </div>
+
+  </div>
+</body>
+
+<footer>
+  <p class="copyright">&copy; 2025 Calviz</p>
+  <script src="app.js"></script>
+</footer>
+
+</html>

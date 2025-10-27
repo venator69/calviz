@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css"> 
+    
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.2/math.min.js"></script>
+    
+    <title>Calviz</title>
+</head>
+<body>
+    <div class="topnav" id="myTopnav">
+        <a href="index.html">CALVIZ</a>
+        <a href="index.html">Home</a>
+        <a href="riemann.html" class="active">Riemann Integral</a>
+        <a href="derivative.html">Derivative</a>
+        <a href="series.html">Taylor series</a>
+        <a href="javascript:void(0);" class="icon">
+            <i class="fa fa-bars"></i>
+        </a>
+    </div>
+
+    <div class="card" data-card-id="riemann-intro-1">
+        <div class="typewriter">
+            <div class="title">
+                Introduction to Integrals
+            </div>
+            <div class="pronoun">Introduction to</div>
+            <div class="pronoun">Integrals</div>
+        </div>
+        <div class="subtitle">
+            Area under a curved boundary
+        </div>
+        <div class="description">
+            When we consider a region under a curved boundary, the problem of assigning
+            area is more difficult. However, over 2000 years ago, Archimedes provided the key
+            to a solution. Consider a sequence of inscribed polygons that approximate the
+            curved region with greater and greater accuracy.
+        </div>
+        <div class="description">
+            For example, for the circle of
+            radius 1, consider regular inscribed polygons P<sub>1</sub>, P<sub>2</sub>, P<sub>3</sub> 
+            below with 4 sides, 8 sides, 16 sides. The area of the circle is equal to the area of
+            P<sub>n</sub> as the limit of n approaches infinity.
+        </div>
+        <div class="description">
+            <div class="image-container">
+                <img src="assets/circle.png" alt="circle">
+            </div>
+        </div>
+        <div class="description">
+            Same things happened when the polygons are being approached from outside the circle.
+        </div>
+        <div class="description">
+            <div class="image-container">
+                <img src="assets/circle2.png" alt="circle">
+            </div>
+        </div>
+    </div>
+    
+    <div class="card" data-card-id="riemann-sum-def">
+        <div class="subtitle">
+            Riemann Sum
+        </div>
+        <div class="description">
+            Consider a function f defined on a closed interval [a, b]. It
+            may have both positive and negative values on the interval, and it does not even
+            need to be continuous. Consider a partition P of the interval [a, b] into n subintervals (not necessarily
+            of equal length) by means of points like the one in the figure below. On each subinterval pick an arbitrary point
+            \(\bar{x}_i\) (which may be an end point); we call it a sample point for the ith subinterval.
+        </div>
+        <div class="image-container">
+            <img src="assets/partitions.PNG" alt="partitions">
+        </div>
+        <div class="description">
+            We Call the sum :
+        </div>
+        <div class="image-container">
+            <img src="assets/sum.png" alt="sum">
+        </div>
+    </div>
+    
+    <div class="card" data-card-id="riemann-vis">
+        <div class="subtitle">
+            Riemann Sum Visualization 
+        </div>
+        <div class="description">
+            Select the functions:
+            <select id="fnSelect" class="selection" style="width: 80%;">
+                <option value="sin(x)+1">y = sin(x)+1</option>
+                <option value="-0.5*x+3">y = -0.5x+3</option>
+                <option value="-x^2+4">y = -x^2+4</option>
+                <option value="-x^3+8">y = -x^3+8</option>
+                <option value="e^x">y = e^x</option>
+                <option value="custom">Custom Function...</option>
+            </select>
+            
+            <input id="fnCustomInput" type="text" value="x^2+1" class="selection hidden" style="width: 80%;" />
+        </div>
+        <div class="description">
+            Select the methods:
+            <select id="method" class="selection">
+                <option value="left">Left Riemann</option>
+                <option value="right">Right Riemann</option>
+                <option value="mid">Midpoint</option>
+            </select>
+        </div>
+
+        <div class="description">  
+            <div class="margins">
+                a/left margin:
+                <input id="a" type="number" step="any" value="0" class="selection" />
+            </div>
+            <div class="margins">
+                b/right margin:
+                <input id="b" type="number" step="any" value="6.283185" class="selection"/>
+            </div>
+        </div>
+        <div class="description">
+            Number of partitions: <span id="nLabel">16</span>
+        </div>
+        <div class="description">
+            <input id="n" type="range" min="1" max="200" value="16" />
+        </div>
+        <canvas id="c" width="1000" height="400"></canvas>
+        <div class="description">
+            Riemann sum = <b id="rsum">-</b>,
+            integral = <b id="integ">-</b>,
+            err = <b id="err">-</b>
+            <span id="customNote" style="color: grey; font-size: 0.8em; display: none;">(Exact Integral removed for custom function)</span>
+        </div>
+    </div>
+
+    <div class="card" data-card-id="riemann-def-integral">
+        <div class="subtitle">Definite Integral</div>
+        <div class="description">
+            Now that you've learned how riemann sum can approximate the value of an integral, 
+            here's the exact definition of a definite integral using riemann sum: 
+        </div>
+        <div class="image-container">
+            <img src="assets/Definite_Integral.PNG" alt="integral">
+        </div>
+    </div>
+    
+    <div class="card module-status-card logged-out-hide" data-card-id="riemann-module-status" style="text-align: center; max-width: 80%; margin: 2rem auto; padding: 1rem 2rem;">
+    <div class="subtitle" style="padding-bottom: 0;">Module Status: Riemann Integral</div>
+    <button id="module-complete-toggle" 
+            class="selection" 
+            style="background-color: #6200ff; color: white; border: none; font-size: 1.2rem;">
+        Mark Module as Complete
+    </button>
+</div>
+</body>
+
+<footer>
+    <p class="copyright">&copy; 2025 Calviz</p>
+    <script src="app.js"></script> 
+    <script src="riemann.js"></script>
+</footer>
+
+</html>

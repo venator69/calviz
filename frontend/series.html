@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="style.css"> 
+    
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.2/math.min.js"></script>
+    
+    <title>Calviz</title>
+</head>
+<body>
+    <div class="topnav" id="myTopnav">
+        <a href="index.html" class="active">CALVIZ</a>
+        <div class="navcontent">
+          <a href="index.html"></a>
+          <a href="index.html">Home</a>
+          <a href="riemann.html">Riemann Integral</a>
+          <a href="derivative.html">Derivative</a>
+          <a href="series.html">Taylor series</a>
+          <a href="login.html" class="login">login</a>
+        </div>
+          <div class="profile-dropdown" id="pp">
+            <img src="assets/default.jpg" alt="Profile picture" id="profilePic">
+            <span class="prof" id="logoutBtn">  logout</span>
+            <div class="dropdown-content" id="logoutMenu">
+              <a href="javascript:void(0);" id="logoutBtn">Logout</a>
+            </div>
+        </div>
+      <div class="topnav-right">
+        <a href="javascript:void(0);" class="icon">
+          <i class="fa fa-bars"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="card" data-card-id="series-intro-1">
+        <div class="typewriter">
+            <div class="title">
+                Introduction to Series
+            </div>
+            <div class="pronoun">Introduction to</div>
+            <div class="pronoun">Series</div>
+        </div>
+        <div class="subtitle">
+            Infinite series
+        </div>
+        <div class="description">
+            When you ask a computer or a calculator for the sine of an angle, or e to some
+            power, it is using an algorithm to make this approximation. Many such algorithms
+            are based on infinite series. An infinite series is a sum of infinitely many terms.
+        </div>
+        <div class="description">
+            The infinite series converges for the following rules : 
+        </div>
+        <div class="description">
+            <div class="image-container">
+                <img src="assets/convergence.png" alt="convegence">
+            </div>
+        </div>
+    </div>
+    <div class="card" data-card-id="series-geo">
+        <div class="subtitle">
+            Geometric Series
+        </div>
+        <div class="description">
+            Geometric Series is a series of the form : Sn = a + ar + ar² +... + ar<sup>n-1</sup> = a(1-r<sup>n</sup>)/(1-r)
+            where a is the first term, r is the common ratio, and n is the number of terms. The sum can also be represented
+            by the formula in the figure below:
+        </div>
+        <div class="image-container">
+            <img src="assets/partgeo.png" alt="partgeo">
+        </div>
+        <div class="description">
+            If |r| < 1, lim x->inf of r<sup>n</sup> = 0, thus:
+        </div>
+        <div class="image-container">
+            <img src="assets/geo.png" alt="sumgeo">
+        </div>
+    </div>
+    
+    <div class="card" data-card-id="series-taylor-def">
+        <div class = "subtitle">
+            Reconstructing Trancedentals
+        </div>
+        <div class="description">
+            By integrating the geometric series, we got -ln(1 - x) = x + x<sup>2</sup>/2 + x<sup>3</sup>/3 + x<sup>4</sup>/4 + ...
+        </div>
+        <div class="description">
+            By substituting -x for x, we got ln(1 + x) = x - x<sup>2</sup>/2 + x<sup>3</sup>/3 - x<sup>4</sup>/4 +...
+        </div>
+        <div class = "subtitle">
+            Taylor Series
+        </div>
+        <div class="description">
+            The major question still dangling is this: Given a function,
+            can we represent it as a power series in x, or more generally, in x- a?
+            More precisely, can we find numbers C<sub>0</sub>,C<sub>1</sub>,C<sub>2</sub>,C<sub>3</sub>,... such that:
+        </div>
+        <div class="description">
+            f(x) = c<sub>0</sub> + c<sub>1</sub>(x - a) + c<sub>2</sub>(x - a)² + c<sub>3</sub>(x - a)³ +....
+        </div>
+        <div class="description">
+            If such representation exists, by substituting x = a, we get :
+        </div>
+        <div class="description">c<sub>0</sub> = f(a)</div>
+        <div class="description">c<sub>1</sub> = f'(a)</div>
+        <div class="description">c<sub>2</sub> = f''(a)/(2!)</div>
+        <div class="description">thus: c<sub>n</sub> = f<sup>[n]</sup>(a)/(n!)</div>
+        <div class="description">
+            To make it easier to evaluate, use MacLaurin series, which is a Taylor series at a = 0:
+        </div>
+    </div>
+
+    <div class="card" data-card-id="series-vis">
+        <div class="subtitle">
+            Maclaurin Series Visualisation
+        </div>
+        <div class="description">
+            Select the functions:
+            <select id="fnInput" class="selection">
+                <option value="inv">y = 1/1-x</option>
+                <option value="ln">y = ln(1-x)</option>
+                <option value="exp">y = e^x</option>
+                <option value="sin">y = sin(x)</option>
+                <option value="cos">y = cos(x)</option>
+            </select>
+        </div>
+        <div class="description">  
+            <div class="margins">
+                left margin:
+                <input id="a" type="number" step="any" value="-4" class="selection" />
+            </div>
+            <div class="margins">
+                right margin:
+                <input id="b" type="number" step="any" value="4" class="selection"/>
+            </div>
+        </div>
+        <div class="description">
+            x: <span id="xLabel">0</span>
+        </div>
+        <div class="description">
+            <input id="x" type="range" min="-2" max="2" value="0" step="0.1"/>
+        </div>
+        <div class="description">
+            Number of terms: <span id="termsLabel">4</span>
+        </div>
+        <div class="description">
+            <input id="terms" type="range" min="1" max="30" value="4" />
+        </div>
+        <canvas id="series" width="1000" height="400"></canvas>
+        <div class="description">
+        y approx = <b id="approx">-</b>, y exact = <b id="exact">-</b>,
+        err = <b id="err">-</b>
+        </div>
+        <div class="description">
+            Legend :
+            <span style="color:red;">Red</span> is the Maclaurin approximation, <span style="color:blue;">Blue</span> is the real function.
+        </div>
+    </div>
+
+    <div class="card" data-card-id="series-approx">
+        <div class="subtitle">Taylor Approximation</div>
+        <div class="description">
+            Using that properties we can now approximate many trancedental functions. With error function :  
+        </div>
+        <div class="image-container">
+            <img src="assets/error.png" alt="error">
+        </div>
+    </div>
+    
+    <div class="card module-status-card logged-out-hide" data-card-id="series-module-status" style="text-align: center; max-width: 80%; margin: 2rem auto; padding: 1rem 2rem;">
+    <div class="subtitle" style="padding-bottom: 0;">Module Status: Taylor Series</div>
+        <button id="module-complete-toggle" 
+                class="selection" 
+                style="background-color: #6200ff; color: white; border: none; font-size: 1.2rem;">
+            Mark Module as Complete
+        </button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("series");
+        const ctx = canvas.getContext("2d");
+        const moduleToggleButton = document.getElementById('module-complete-toggle');
+
+        const fnInput = document.getElementById('fnInput');
+        const aInput = document.getElementById('a');
+        const bInput = document.getElementById('b');
+        const xInput = document.getElementById('x');
+        const termsInput = document.getElementById('terms');
+        const termsLabel = document.getElementById('termsLabel');
+        const approx = document.getElementById('approx');
+        const exact = document.getElementById('exact');
+        const err = document.getElementById('err');
+        const xLabel = document.getElementById('xLabel');
+
+        /*************************************
+            Helper Functions
+        **************************************/
+        function factorial(n) {
+            return n <= 1 ? 1 : n * factorial(n - 1);
+        }
+
+        function mapX(x, a, b) {
+            return (x - a) / (b - a) * canvas.width;
+        }
+
+        function mapY(y, minY, maxY) {
+            return canvas.height - (y - minY) / (maxY - minY) * canvas.height;
+        }
+
+        function drawAxes(a, b, minY, maxY) {
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 2;
+
+            // y-axis
+            const x0 = (0 - a) / (b - a) * canvas.width;
+            ctx.beginPath();
+            ctx.moveTo(x0, 0);
+            ctx.lineTo(x0, canvas.height); 
+            ctx.stroke();
+
+            // x-axis
+            const y0 = mapY(0, minY, maxY); 
+            ctx.beginPath();
+            ctx.moveTo(0, y0);
+            ctx.lineTo(canvas.width, y0); 
+            ctx.stroke();
+        }
+
+        /*************************************
+            Maclaurin Series Functions
+        **************************************/
+        function MLInv(x, terms) {
+            let sum = 0;
+            for (let n = 0; n < terms; n++) sum += Math.pow(x, n);
+            return sum;
+        }
+
+        function MLLn(x, terms) {
+            let sum = 0;
+            for (let n = 1; n <= terms; n++)
+                sum += Math.pow(-1, n + 1) * Math.pow(x, n) / n;
+            return sum;
+        }
+
+        function MLExp(x, terms) {
+            let sum = 0;
+            for (let n = 0; n < terms; n++)
+                sum += Math.pow(x, n) / factorial(n);
+            return sum;
+        }
+
+        function MLSin(x, terms) {
+            let sum = 0;
+            for (let n = 0; n < terms; n++)
+                sum += Math.pow(-1, n) * Math.pow(x, 2 * n + 1) / factorial(2 * n + 1);
+            return sum;
+        }
+
+        function MLCos(x, terms) {
+            let sum = 0;
+            for (let n = 0; n < terms; n++)
+                sum += Math.pow(-1, n) * Math.pow(x, 2 * n) / factorial(2 * n);
+            return sum;
+        }
+
+        /*************************************
+            Function References
+        **************************************/
+        const fnMaclaurin = {
+            inv: MLInv,
+            ln:  MLLn,
+            exp: MLExp,
+            sin: MLSin,
+            cos: MLCos,
+        };
+
+        const fnReal = {
+            inv: (x) => 1 / (1 - x),
+            ln:  (x) => Math.log(1 + x), 
+            exp: (x) => Math.exp(x),
+            sin: (x) => Math.sin(x),
+            cos: (x) => Math.cos(x),
+        };
+
+        /*************************************
+            Drawing Functions
+        **************************************/
+        function drawSeries(fnM, fnR, a, b, terms) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Compute Y bounds
+            let minY = Infinity, maxY = -Infinity;
+            const threshold = 100;
+            for (let i = 0; i <= 100; i++) {
+                const xi = a + (b - a) * i / 100;
+                
+                const yM = fnM(xi, terms);
+                if (yM > -threshold && yM < threshold) {
+                    if (yM < minY) minY = yM;
+                    if (yM > maxY) maxY = yM;
+                }
+                const yR = fnR(xi);
+                if (yR > -threshold && yR < threshold) {
+                    if (yR < minY) minY = yR;
+                    if (yR > maxY) maxY = yR;
+                }
+            }
+            
+            // Default check if range is too narrow
+            if (minY === Infinity || maxY === -Infinity || minY === maxY) {
+                minY = -2;
+                maxY = 2;
+            }
+
+            const margin = 0.1 * (maxY - minY);
+            minY -= margin;
+            maxY += margin;
+
+
+            drawAxes(a, b, minY, maxY);
+
+            // Draw real function (Blue)
+            ctx.beginPath();
+            ctx.strokeStyle = 'blue';
+            ctx.lineWidth = 3;
+            let isPenDown = false;
+            for (let px = a; px <= b; px += 0.01) {
+                const y = fnR(px);
+                const py = mapY(y, minY, maxY);
+
+                if (isFinite(py) && py > -1000 && py < 1000) {
+                    if (isPenDown) {
+                        ctx.lineTo(mapX(px, a, b), py);
+                    } else {
+                        ctx.moveTo(mapX(px, a, b), py);
+                        isPenDown = true;
+                    }
+                } else {
+                    isPenDown = false;
+                }
+            }
+            ctx.stroke();
+
+            // Draw Maclaurin approximation (Red)
+            ctx.beginPath();
+            ctx.strokeStyle = 'red';
+            ctx.lineWidth = 3;
+            isPenDown = false;
+            for (let px = a; px <= b; px += 0.01) {
+                const yApprox = fnM(px, terms);
+                const pyApprox = mapY(yApprox, minY, maxY);
+                
+                if (isFinite(pyApprox) && pyApprox > -1000 && pyApprox < 1000) {
+                    if (isPenDown) {
+                        ctx.lineTo(mapX(px, a, b), pyApprox);
+                    } else {
+                        ctx.moveTo(mapX(px, a, b), pyApprox);
+                        isPenDown = true;
+                    }
+                } else {
+                    isPenDown = false;
+                }
+            }
+            ctx.stroke();
+
+            // Draw cursor points
+            const x = parseFloat(xInput.value);
+            const yApprox = fnM(x, terms);
+            const y = fnR(x);
+            
+            // Draw dot for Maclaurin approx
+            ctx.fillStyle = "red"; 
+            ctx.beginPath();
+            ctx.arc(mapX(x, a, b), mapY(yApprox, minY, maxY), 4, 0, 2 * Math.PI);
+            ctx.fill();
+
+            // Draw dot for Real function
+            ctx.fillStyle = "blue"; 
+            ctx.beginPath();
+            ctx.arc(mapX(x, a, b), mapY(y, minY, maxY), 4, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+
+
+        /*************************************
+            Update Function
+        **************************************/
+        function update() {
+            const fn = fnInput.value;
+            const fnM = fnMaclaurin[fn];
+            const fnR = fnReal[fn];
+            const a = parseFloat(aInput.value);
+            const b = parseFloat(bInput.value);
+            const x = parseFloat(xInput.value);
+            const terms = parseInt(termsInput.value);
+
+            // Basic validation
+            if (isNaN(a) || isNaN(b) || a >= b) return;
+
+
+            termsLabel.textContent = terms;
+            xLabel.textContent = x;
+
+            const approxUp = fnM(x, terms);
+            const exactUp = fnR(x);
+            
+            if (isFinite(approxUp)) {
+                 approx.textContent = approxUp.toExponential(3);
+            } else {
+                 approx.textContent = "NaN";
+            }
+            
+            if (isFinite(exactUp)) {
+                exact.textContent = exactUp.toExponential(3);
+                if(isFinite(approxUp)) {
+                    err.textContent = Math.abs(approxUp - exactUp).toExponential(3);
+                } else {
+                    err.textContent = "NaN";
+                }
+            } else {
+                exact.textContent = "NaN";
+                err.textContent = "NaN";
+            }
+            
+            xInput.min = a;
+            xInput.max = b;
+            xInput.step = (b - a) / 50; 
+            drawSeries(fnM, fnR, a, b, terms);
+        }
+
+        /*************************************
+            Event Listeners
+        **************************************/
+        [fnInput, aInput, bInput, xInput, termsInput].forEach(el =>
+            el.addEventListener('input', update)
+        );
+
+        update();
+
+        // Toggle Burger Menu
+        function toggleBurger() {
+            const topnav = document.getElementById("myTopnav");
+            topnav.classList.toggle("responsive");
+        }
+
+        document.querySelector(".topnav .icon").addEventListener("click", toggleBurger);
+
+
+        /*************************************
+         LOCAL STORAGE MODULE PROGRESS TRACKER
+        **************************************/
+
+        const MODULE_ID = 'series'; 
+        const STORAGE_KEY_MODULE = `calviz_module_${MODULE_ID}_complete`;
+        
+        function loadModuleStatus() {
+            const isComplete = localStorage.getItem(STORAGE_KEY_MODULE) === 'true';
+            updateModuleButton(isComplete);
+        }
+
+        function updateModuleButton(isComplete) {
+            if (isComplete) {
+                moduleToggleButton.textContent = 'Module Complete ✓';
+                moduleToggleButton.style.backgroundColor = '#00a6cf';
+                document.querySelectorAll('.card').forEach(card => card.classList.add('read'));
+            } else {
+                moduleToggleButton.textContent = 'Mark Module as Complete';
+                moduleToggleButton.style.backgroundColor = '#6200ff';
+                document.querySelectorAll('.card').forEach(card => card.classList.remove('read'));
+            }
+        }
+
+        window.toggleModuleStatus = function() {
+            const isCurrentlyComplete = localStorage.getItem(STORAGE_KEY_MODULE) === 'true';
+            const newStatus = !isCurrentlyComplete;
+            
+            localStorage.setItem(STORAGE_KEY_MODULE, newStatus ? 'true' : 'false');
+            updateModuleButton(newStatus);
+        }
+        
+        moduleToggleButton.addEventListener('click', window.toggleModuleStatus);
+        document.addEventListener('DOMContentLoaded', loadModuleStatus); 
+
+    </script>
+</body>
+
+<footer>
+    <p class="copyright">&copy; 2025 Calviz</p>
+    <script src="app.js"></script> 
+    <script src="series.js"></script>
+</footer>
+
+</html>

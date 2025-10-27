@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css"> 
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <title>Calviz</title>
+</head>
+
+<body>
+    <div class="topnav" id="myTopnav">
+        <a href="index.html">CALVIZ</a>
+        <a href="index.html">Home</a>
+        <a href="riemann.html">Riemann Integral</a>
+        <a href="derivative.html" class="active">Derivative</a>
+        <a href="series.html">Taylor series</a>
+        <a href="javascript:void(0);" class="icon">
+            <i class="fa fa-bars"></i>
+        </a>
+        
+    </div>
+
+    <div class="card" data-card-id="deriv-intro-1">
+        <div class="typewriter">
+            <div class="title">
+                Introduction to Derivative
+            </div>
+            <div class="pronoun">Introduction to</div>
+            <div class="pronoun">Derivative</div>
+        </div>
+        <div class="subtitle">
+            Instantaneous velocity
+        </div>
+        <div class="description">
+            If we drive an automobile from one town to another 80 miles away in 2 hours, our average velocity is 40
+            miles per hour. But during our trip the speedometer reading was often different from 40.At
+            the start, it registered 0; at times it rose as high as 57. What the speedometer reads at a
+            particular instant is the instantaneous velocity at that instant. 
+        </div>
+        <div class="description">
+            Average velocity is counted by dividing the distance traveled by the time taken to travel that distance.
+            The smaller the time interval, the closer the average velocity over that interval is to the instantaneous velocity.
+            If we let the time interval shrink to zero, the average velocity approaches the instantaneous velocity.
+            \[
+            v = \lim_{Δt \to 0} v_{avg} = \lim_{Δt \to 0} \frac{f(x+Δt) - f(x)}{Δt}
+            \]
+        </div>
+    </div>
+
+    <div class="card" data-card-id="deriv-def">
+        <div class="subtitle">
+            Definition of a Derivative
+        </div>
+        <div class="description">
+            Using the example of velocity above, derivative of a function at a point is the limit of the average rate of change of the function over an interval as the interval shrinks to zero.
+            \[
+            f'(a) = \lim_{h \to 0} \frac{f(a+h) - f(a)}{h}
+            \]
+        </div>
+    </div>
+
+    <div class="card" data-card-id="deriv-vis">
+        <div class="subtitle">
+            Derivative Visualisation
+        </div>
+        <div class="description">
+            evaluated at: <span id="xLabel">0</span>
+        </div>
+        <div class="description">
+            <input id="x" type="range" min="0" max="6" value="0"  step="0.1"/>
+        </div>
+        <div class="description">
+            Δtime : <span id="timeLabel">1</span>
+        </div>
+        <div class="description">
+            <input id="time" type="range" min="0.01" max="2" value="1"  step="0.01"/>
+        </div>
+        <canvas id="deriv" width="1000" height="400"></canvas>
+        <div class="description">
+        f(x) = <b id="yLabel">-</b>, f(x+Δtime) = <b id="yhLabel">-</b>,
+        </div>
+        Legend :
+          <span style="color:red;">Red</span> is the tangent line, <span style="color:blue;">Blue</span> is the Position.
+    </div>
+
+    <div class="card module-status-card logged-out-hide" data-card-id="series-module-status" style="text-align: center; max-width: 80%; margin: 2rem auto; padding: 1rem 2rem;">
+    <div class="subtitle" style="padding-bottom: 0;">Module Status: Derivative</div>
+        <button id="module-complete-toggle" 
+                class="selection" 
+                style="background-color: #6200ff; color: white; border: none; font-size: 1.2rem;">
+            Mark Module as Complete
+        </button>
+    </div>
+</body>
+
+<footer>
+    <p class="copyright">&copy; 2025 Calviz</p>
+    <script src="app.js"></script> 
+    <script src="derivative.js"></script>
+</footer>
+
+</html>
