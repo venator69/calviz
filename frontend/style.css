@@ -429,6 +429,9 @@ input[type=range]:hover::-webkit-slider-thumb {
     background: #fffb00;
 }
 
+.login{
+    margin-left: auto;
+}
 /*=====================================
   CANVAS & OUTPUT STYLES
 =======================================*/
