@@ -1,4 +1,4 @@
-// --- Fungsi loginUser yang tadi dihapus dari app.js ---
+// --- Fungsi loginUser ---
 async function loginUser(name, password) {
   if (!name || !password) return alert("Name dan password wajib diisi");
 
