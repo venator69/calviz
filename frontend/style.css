@@ -19,6 +19,8 @@ body:has(.topnav a[href="index.html"].active) {
     background: linear-gradient(45deg, #6200ff, #00c3ff);
 }
 
+.description
+
 .card {
     padding: 2rem;
     margin: 2rem;
@@ -373,6 +375,12 @@ a {
     box-shadow: none; 
 }
 
+.copyright {
+    font-size: 0.8rem;
+    text-align: center;
+    margin-top: 1rem;
+    color: #ffffff;
+}
 
 .profile-dropdown:hover .dropdown-content {
     display: block;
@@ -454,7 +462,7 @@ input[type=range]:hover::-webkit-slider-thumb {
 }
 
 /*=====================================
-  CANVAS & OUTPUT STYLES
+    CANVAS & OUTPUT STYLES
 =======================================*/
 canvas {
     width: 100%;
@@ -481,7 +489,7 @@ body:has(.topnav a[href="series.html"].active) canvas {
 }
 
 /*=====================================
-  MEDIA QUERIES (RESPONSIVENESS)
+    MEDIA QUERIES (RESPONSIVENESS)
 =======================================*/
 @media screen and (max-width: 1000px) {
     /* NAVIGATION */
