@@ -500,6 +500,10 @@ body:has(.topnav a[href="series.html"].active) canvas {
   MEDIA QUERIES (RESPONSIVENESS)
 =======================================*/
 @media screen and (max-width: 1000px) {
+    .topnav.responsive .login,
+    .topnav.responsive .profile-dropdown {
+        display: none !important;
+    }
     /* NAVIGATION */
     .topnav a {
         padding: 10px 12px;
@@ -603,8 +607,4 @@ body:has(.topnav a[href="series.html"].active) canvas {
     #songtitlebig{ display: none; }
     #songtitlesmall { display: flex; justify-content: center; }
 
-    .topnav.responsive .login,
-    .topnav.responsive .profile-dropdown {
-        display: none !important;
-    }
 }
