@@ -53,6 +53,7 @@ body:has(.butts) .card {
   NAVIGATION BAR (TOPNAV)
 =======================================*/
 .topnav {
+    display: flex;
     overflow: visible;
     background-color: #333;
     position: sticky;
@@ -475,18 +476,53 @@ body:has(.topnav a[href="series.html"].active) canvas {
     margin-top: 1rem;
 }
 
+.prof{
+    display: none;
+}
 
 /*=====================================
   MEDIA QUERIES (RESPONSIVENESS)
 =======================================*/
 @media screen and (max-width: 1000px) {
     /* NAVIGATION */
+    .topnav a {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+    .topnav a.profile-dropdown{
+        right: 0;
+    }
+    .navcontent{
+        display: block;
+    }
     .topnav a:not(:first-child) { display: none; }
     .topnav a.icon { float: right; display: block; }
-    .topnav.responsive { position: relative; }
+    .topnav.responsive { position: relative;}
     .topnav.responsive .icon { position: absolute; right: 0; top: 0; }
     .topnav.responsive a { float: none; display: block; text-align: left; }
     .topnav a.active { text-align: center; }
+    .topnav.responsive .prof{
+        display: inline;
+        padding-left: 8px;
+        color : white;
+    }
+
+    .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* jarak kecil antara PP & burger */
+    position: absolute;
+    right: 10px;
+    top: 8px;
+    }
+
+    .topnav.responsive #pp{
+        display: none;
+    }
+
+    .topnav #pp{
+        margin-right: 0;
+    }
 
     /* LAYOUT & CARDS */
     .wrapper { display: block; } 
@@ -528,16 +564,4 @@ body:has(.topnav a[href="series.html"].active) canvas {
     /* SONG TITLE */
     #songtitlebig{ display: none; }
     #songtitlesmall { display: flex; justify-content: center; }
-}
-
-.copyright {
-    color: white; 
-    text-align: center; 
-    font-size: 0.9rem;
-    margin: 0;
-    padding: 0;
-}
-
-.logged-out-hide {
-    display: none !important; /* !important untuk memastikan override display:flex/block */
 }
