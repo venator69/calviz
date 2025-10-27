@@ -46,7 +46,15 @@ async function handleLoginState() {
       if (loginLink) loginLink.style.display = "none";
       if (profilePic) {
         profilePic.style.display = "flex";
-        profilePic.querySelector("img").src = data.profile_picture || "assets/default.jpg";
+
+        const imgEl = profilePic.querySelector("img");
+        // Set src dari database atau default
+        imgEl.src = data.profile_picture || "assets/default.jpg";
+
+        // Jika URL tidak valid atau file hilang, pakai default
+        imgEl.onerror = () => {
+          imgEl.src = "assets/default.jpg";
+        };
       }
       if (usernameLabel) usernameLabel.textContent = data.name;
 
@@ -68,6 +76,7 @@ async function handleLoginState() {
     return false;
   }
 }
+
 
 // -----------------------------
 // DOM CONTENT LOADED
