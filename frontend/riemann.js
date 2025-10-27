@@ -54,7 +54,7 @@ function evaluateFn(x) {
         try {
             return currentFunctionEvaluator(x);
         } catch (e) {
-            return NaN; // Handle evaluation errors
+            return NaN;
         }
     }
     return 0;
@@ -84,7 +84,6 @@ function drawRiemann(a, b, n, method) {
     if (!ctx) return 0;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Find min/max for scaling
     let minY = Infinity, maxY = -Infinity;
     const pointsToSample = 200;
     for (let i = 0; i <= pointsToSample; i++) {
@@ -106,7 +105,6 @@ function drawRiemann(a, b, n, method) {
     let riesum = 0;
     const dx = (b - a) / n;
 
-    // Draw Riemann Rectangles
     for (let i = 0; i < n; i++) {
         let x = a + i * dx;
         let height;
@@ -130,7 +128,6 @@ function drawRiemann(a, b, n, method) {
         ctx.fillRect(scaledX, rectY, scaledDX, rectHeight);
     }
 
-    // Draw the function curve
     ctx.beginPath();
     ctx.strokeStyle = '#08101a';
     ctx.lineWidth = 3;
@@ -220,20 +217,52 @@ function update() {
 
 
 /*************************************
-  MODULE PROGRESS TRACKER
+  MODULE PROGRESS TRACKER (INTEGRASI BACKEND)
 **************************************/
 
 const MODULE_ID = 'riemann'; 
 const STORAGE_KEY_MODULE = `calviz_module_${MODULE_ID}_complete`;
+const API_URL = "https://calviz-server-production.up.railway.app/api/progress";
 
-function loadModuleStatus() {
+async function fetchModuleStatus() {
+    try {
+        const res = await fetch(`${API_URL}/get`, {
+            method: 'GET',
+            credentials: 'include'
+        });
+        
+        if (res.status === 401) {
+            localStorage.removeItem(STORAGE_KEY_MODULE);
+            return false;
+        }
+
+        if (!res.ok) throw new Error('Failed to fetch progress from server');
+        
+        const data = await res.json();
+        const isCompleted = data.progress[MODULE_ID] || false;
+        
+        if (isCompleted) {
+            localStorage.setItem(STORAGE_KEY_MODULE, 'true');
+        } else {
+            localStorage.removeItem(STORAGE_KEY_MODULE);
+        }
+        updateModuleButton(isCompleted);
+        return true;
+        
+    } catch (error) {
+        console.warn(`[Riemann Module] Server check failed. Using local status.`, error);
+        loadLocalModuleStatus();
+        return false;
+    }
+}
+
+function loadLocalModuleStatus() {
     const isComplete = localStorage.getItem(STORAGE_KEY_MODULE) === 'true';
     updateModuleButton(isComplete);
 }
 
 function updateModuleButton(isComplete) {
     if (!moduleToggleButton) return;
-    // ... (kode updateModuleButton Anda)
     if (isComplete) {
         moduleToggleButton.textContent = 'Module Complete ✓';
         moduleToggleButton.style.backgroundColor = '#00a6cf';
@@ -245,21 +274,57 @@ function updateModuleButton(isComplete) {
     }
 }
 
-window.toggleModuleStatus = function() {
+window.toggleModuleStatus = async function() {
     const isCurrentlyComplete = localStorage.getItem(STORAGE_KEY_MODULE) === 'true';
     const newStatus = !isCurrentlyComplete;
     
-    localStorage.setItem(STORAGE_KEY_MODULE, newStatus ? 'true' : 'false');
-    updateModuleButton(newStatus);
-    
-    // TODO: TAMBAHKAN FUNGSI SERVER-SIDE
-    // saveModuleProgress(MODULE_ID, newStatus); 
+    try {
+        const res = await fetch(`${API_URL}/save`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ moduleId: MODULE_ID, status: newStatus }),
+            credentials: 'include'
+        });
+
+        if (res.status === 401) {
+             alert("Anda harus login untuk menyimpan progres module!");
+             return; 
+        }
+        
+        if (!res.ok) throw new Error('Server returned error on save.');
+
+        if (newStatus) {
+            localStorage.setItem(STORAGE_KEY_MODULE, 'true');
+        } else {
+            localStorage.removeItem(STORAGE_KEY_MODULE);
+        }
+        updateModuleButton(newStatus);
+        
+        const data = await res.json();
+        console.log(`[Riemann Module] Server Save Success: ${data.message}`);
+
+    } catch(err) {
+        alert(`Gagal menyimpan progres ke server: ${err.message}. Progres hanya disimpan di browser.`);
+        console.error("❌ PROGRESS SAVE FAILED:", err);
+        if (newStatus) {
+            localStorage.setItem(STORAGE_KEY_MODULE, 'true');
+        } else {
+            localStorage.removeItem(STORAGE_KEY_MODULE);
+        }
+        updateModuleButton(newStatus);
+    }
 }
 
 // Event Listeners
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     
-    loadModuleStatus(); 
+    const moduleCard = document.querySelector('.module-status-card');
+    
+    if (moduleCard && !moduleCard.classList.contains('logged-out-hide')) {
+        await fetchModuleStatus(); 
+    } else {
+        loadLocalModuleStatus();
+    }
     
     if (fnSelect) fnSelect.addEventListener('change', toggleCustomInput); 
     if (fnCustomInput) fnCustomInput.addEventListener('input', update);
@@ -270,6 +335,5 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (moduleToggleButton) moduleToggleButton.addEventListener('click', window.toggleModuleStatus);
     
-    // Initial draw
     if (fnSelect) toggleCustomInput();
 });
