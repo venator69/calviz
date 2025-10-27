@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Calviz</title>
+</head>
+
+<body>
+  <div class="topnav" id="myTopnav">
+    <a href="index.html" class="active">CALVIZ</a>
+    <a href="index.html">Home</a>
+    <a href="riemann.html">Riemann Integral</a>
+    <a href="derivative.html">Derivative</a>
+    <a href="limit.html">L'hospital</a>
+    <a href="series.html">Taylor series</a>
+    <a href="javascript:void(0);" class="icon">
+      <i class="fa fa-bars"></i>
+</a>
+
+    </a>
+  </div>
+  <div class="wrapper">
+    <div class="content" id="hoverBtn">
+      <audio loop id="hoverAudio">
+      <source src="assets/Autopilot.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+      </audio>
+      <div class="typewriter">
+        <div class="title"> Welcome to CALVIZ !!</div>
+        <div class="pronoun">Welcome to</div>
+        <div class="pronoun">CALVIZ !!</div>
+      </div>
+      <div class="subtitle">Interactive calculus visualization for visual learners</div> 
+      <div class="buttons">
+        <a href="riemann.html">
+          <button class="butts" id="integral">Riemann Integral</button>
+        </a>
+        <a href="derivative.html">
+          <button class="butts" id="derivative">Derivative</button>
+        </a>
+      </div>
+            <div class="buttons">
+        <a href="limit.html">
+          <button class="butts" id="limit">L'Hospital</button>
+        </a>
+        <a href="series.html">
+          <button class="butts" id="series">Taylor series</button>
+        </a>
+      </div>
+    </div>
+    <div class="image-container">
+      <div id="hoverimage">
+        <img src="assets/profile.png" alt="Profile picture">
+      </div>
+      <div class="songtitle" id="songtitlebig">
+        <button id="muteBtn">
+          <i id="muteIcon" class="fa fa-volume-off"></i> 
+        </button>
+        <i> Song : Autopilot - Kitsch</i>
+      </div>
+    </div>
+      <div class="songtitle" id="songtitlesmall">
+        <button id="muteSm">
+          <i id="muteIconSm" class="fa fa-volume-off"></i> 
+        </button>
+        <i> Song : Autopilot - Kitsch</i>
+      </div>
+
+  </div>
+  <div class="social">
+    <div class="content">
+      <div class="typewriter">
+        <div class="subtitle">My Socials : </div>
+      </div>
+    <div class="socials">
+      <a href ="https://discord.com/users/864557474853290034">
+        <div class="social-icons">
+          <img src="assets/discord.png" alt="Profile picture"><span class="links">DISCORD</span>
+        </div>
+      </a>
+      <a href ="https://www.instagram.com/kletka69420/?next=%2F">      
+        <div class="social-icons">
+          <img src="assets/ig.png" alt="ig"><span class="links">INSTAGRAM</span>
+        </div>
+      </a>
+      <a href ="https://www.linkedin.com/feed/?trk=guest_homepage-basic_google-one-tap-submit">
+        <div class="social-icons">
+          <img src="assets/linkedin.png" alt="Profile picture"><span class="links">LINKEDIN</span>
+        </div>
+      </a>
+      <a href="https://www.youtube.com/@transracialtrain9151">
+        <div class="social-icons">
+          <img src="assets/youtube.png" alt="Profile picture"><span class="links">YOUTUBE</span>
+        </div>
+      </a>
+      <a href="https://github.com/venator69">
+        <div class="social-icons">
+          <img src="assets/github.png" alt="Profile picture"><span class="links">GITHUB</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+
+</body>
+<footer>
+  <script>
+    const img = document.querySelector("#hoverimage img");
+
+    const buttonImages = {
+      integral: "assets/profile.png",
+      derivative: "assets/derivative.png",
+      limit: "assets/limit.png",
+      series: "assets/series.png"
+    };
+
+    function changeImage(newSrc) {
+      img.classList.add("fade-out");
+      setTimeout(() => {
+        img.src = newSrc;
+        img.classList.remove("fade-out");
+      }, 300); 
+    }
+
+    for (let id in buttonImages) {
+      const btn = document.getElementById(id);
+
+      btn.addEventListener("mouseenter", () => {
+        changeImage(buttonImages[id]);
+      });
+    }
+    function toggleBurger() {
+      const topnav = document.getElementById("myTopnav");
+      topnav.classList.toggle("responsive");
+    }
+    
+    // Add click listener to burger icon
+    document.querySelector(".topnav .icon").addEventListener("click", toggleBurger);
+      
+    const audio = document.getElementById('hoverAudio');
+
+
+    const muteBtn = document.getElementById('muteBtn');
+    const muteSm = document.getElementById('muteSm');
+    const muteIcon = document.getElementById('muteIcon');
+    const muteIconSm = document.getElementById('muteIconSm');
+
+    muteBtn.addEventListener('click', () => {
+      if(audio.paused) audio.play();  // ensure audio plays on first click
+      audio.muted = !audio.muted;     // toggle mute
+      muteIcon.className = audio.muted ? "fa fa-volume-off" : "fa fa-volume-up"; // update icon
+    });
+
+    muteSm.addEventListener('click', () => {
+      if(audio.paused) audio.play();  // ensure audio plays on first click
+      audio.muted = !audio.muted;     // toggle mute
+      muteIconSm.className = audio.muted ? "fa fa-volume-off" : "fa fa-volume-up"; // update icon
+    });
+
+
+  </script>
+</footer>
+</html>
