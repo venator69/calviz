@@ -526,7 +526,7 @@ body:has(.topnav a[href="series.html"].active) canvas {
     .social { padding: 1rem; }
     
     /* Login/Register Mobile Card Size */
-    body:has(.butts) .card { max-width: 100%; } 
+    body:has(.butts) .card { max-width: 80%; } 
     
     /* TITLES & TEXT */
     .title { display: none; } 
