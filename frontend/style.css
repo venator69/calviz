@@ -476,6 +476,9 @@ body:has(.topnav a[href="series.html"].active) canvas {
 /*=====================================
   MEDIA QUERIES (RESPONSIVENESS)
 =======================================*/
+/*=====================================
+  MEDIA QUERIES (RESPONSIVENESS)
+=======================================*/
 @media screen and (max-width: 1000px) {
     /* NAVIGATION */
     .topnav a {
@@ -494,7 +497,7 @@ body:has(.topnav a[href="series.html"].active) canvas {
     .topnav.responsive .icon { position: absolute; right: 0; top: 0; }
     .topnav.responsive a { float: none; display: block; text-align: left; }
     .topnav a.active { text-align: center; }
-    .topnav.responsive a.prof{
+    .topnav.responsive .prof{
         display: inline;
         padding-left: 8px;
         color : white;
