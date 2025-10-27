@@ -485,7 +485,7 @@ body:has(.topnav a[href="series.html"].active) canvas {
         padding: 10px 12px;
         font-size: 0.9rem;
     }
-    .profile-dropdown{
+    .topnav a.profile-dropdown{
         right: 0;
     }
     .navcontent{
@@ -516,7 +516,7 @@ body:has(.topnav a[href="series.html"].active) canvas {
         display: none;
     }
 
-    .topnav .nav-right #pp{
+    .topnav #pp{
         margin-right: 0;
     }
 
