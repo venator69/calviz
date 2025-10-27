@@ -486,6 +486,13 @@ body:has(.topnav a[href="series.html"].active) canvas {
     align-items: center;
     padding: 14px 16px; /* Match other nav items */
 }
+.topnav a {
+    transition: all 0.3s ease-in-out;
+}
+
+.topnav .dropdown-content {
+    transition: all 0.3s ease-in-out;
+}
 /*=====================================
   MEDIA QUERIES (RESPONSIVENESS)
 =======================================*/
