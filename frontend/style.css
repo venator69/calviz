@@ -606,5 +606,4 @@ body:has(.topnav a[href="series.html"].active) canvas {
     /* SONG TITLE */
     #songtitlebig{ display: none; }
     #songtitlesmall { display: flex; justify-content: center; }
-
 }
