@@ -520,10 +520,7 @@ body:has(.topnav a[href="series.html"].active) canvas {
         display: block;
     }
     .topnav a:not(:first-child):not(.login):not(.icon) { display: none; }
-    .topnav.responsive .navcontent a {
-        display: block;
-        text-align: left;
-    }
+
 
     .topnav .icon {
         display: block;
@@ -535,11 +532,10 @@ body:has(.topnav a[href="series.html"].active) canvas {
     .topnav.responsive .icon { position: absolute; right: 0; top: 0; }
     .topnav.responsive a { float: none; display: block; text-align: left; }
     .topnav a.active { text-align: center; }
-    .topnav.responsive .prof{
-        display: inline;
-        padding-left: 8px;
-        color : white;
-    }
+    .topnav.responsive .navcontent a {
+        display: block !important;
+        text-align: left !important;
+        }
     
     .nav-right {
     display: flex;
