@@ -3,22 +3,28 @@
 // -----------------------------
 async function logout() {
   try {
-    const res = await fetch("https://calviz-server-production.up.railway.app/logout", {
-      method: "POST",
-      credentials: "include"
-    });
+  const res = await fetch("https://calviz-server-production.up.railway.app/logout", {
+  method: "POST",
+  credentials: "include"
+  });
 
-    console.log("Logout status:", res.status);
-    const data = await res.json().catch(() => ({}));
-    console.log("Logout response:", data);
+  console.log("Logout status:", res.status);
+  const data = await res.json().catch(() => ({}));
+  console.log("Logout response:", data);
 
-    if (res.ok) {
-      location.reload();
-    } else {
-      alert("Logout gagal: " + (data.message || res.status));
-    }
+  if (res.ok) {
+  await handleLoginState(); 
+
+  const logoutMenu = document.getElementById('logoutMenu');
+  if (logoutMenu) {
+  logoutMenu.classList.remove('show-dropdown');
+  }
+
+  } else {
+  alert("Logout gagal: " + (data.message || res.status));
+  }
   } catch (err) {
-    console.error("Logout error:", err);
+  console.error("Logout error:", err);
   }
 }
 
