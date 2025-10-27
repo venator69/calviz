@@ -480,7 +480,12 @@ body:has(.topnav a[href="series.html"].active) canvas {
 .logged-out-hide {
     display: none !important; 
 }
-
+.topnav .login {
+    margin-left: auto; /* Push to the right */
+    display: flex;
+    align-items: center;
+    padding: 14px 16px; /* Match other nav items */
+}
 /*=====================================
   MEDIA QUERIES (RESPONSIVENESS)
 =======================================*/
@@ -496,13 +501,18 @@ body:has(.topnav a[href="series.html"].active) canvas {
     .topnav a.profile-dropdown{
         right: 0;
     }
-    .topnav a.login{
-        right: 0;
+    .topnav .login {
+        position: absolute;
+        right: 50px; /* Place before hamburger icon */
+        top: 0;
+        display: flex; /* Ensure it’s visible */
+        padding: 10px 12px;
+        font-size: 0.9rem;
     }
     .navcontent{
         display: block;
     }
-    .topnav a:not(:first-child) { display: none; }
+    .topnav a:not(:first-child):not(.login):not(.icon) { display: none; }
     .topnav a.icon { float: right; display: block; right: 0;}
     .topnav.responsive { position: relative;}
     .topnav.responsive .icon { position: absolute; right: 0; top: 0; }
